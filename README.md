@@ -2,14 +2,18 @@
 This Repository is a place to store our data files in order to work collaboratively on this project over FSB data.
 
 # Project Overview
-The Farmer School of Business conducts annual surveys to learn about student's job placement post-graduation. The data is mixed with most coming from self-reported student surveys and the other observations coming from the Miami University database. Our goal with the data is to 
+The Farmer School of Business conducts annual surveys to learn about student's job placement post-graduation. The data is mixed with most coming from self-reported student surveys and the other observations coming from the Miami University database. Our goal with the data is to understand the macro placement and salary trends for FSB students over the last three years in order to assist Kirk Bogard, the Associate Vice President for Development and External Relations in FSB. Specifically, we will:
 
+* Create a a graph that shows the average salary per year, per major of Farmer graduates.
+* Overlay a graph of the previous year's average salary per year, per major of Farmer graduates
+* Compare these graphs with national averages from other schools to show FSB’s success (if FSB performs better than the national average)
 
-## Project Overview
+This will help Kirk Bogard by:
 
-Annually, the FSB conducts a senior survey of graduates to learn of their employment status.  In addition, information is verified using LinkedIn and employer survey information.  The data you are provided ('FSB_BI_Survey_2019_2021.rds') contains data on graduates for 2019, 2020, and 2021.  The data are merged from two sources:  the senior survey, and data from the Miami University database.  
+* Understanding of data that has been collected over the last 3 years in a structured way
+* Having the average salary of each FSB major for past years
+* Understanding of placement rates for each major
 
-The data are anonymized, however it is possible that if you look hard enough, you can identify students.  You are bound, ethically not to do so.  It is a strict ethical code that you will not discuss individual data points with ANYONE except for me and your team.  Failure to comply with this code of ethics will result in a failing grade in the course.  
 
 ## Data Sources
 
