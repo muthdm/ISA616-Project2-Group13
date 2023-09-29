@@ -1,0 +1,85 @@
+---
+title: Project 2
+author: Samuel Schmitz and David Muth
+date: September 29th, 2023
+output:
+  html_document:
+    code_folding: show
+    df_print: paged
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_float: yes
+    code_download: yes
+  word_document:
+    toc: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=6)
+```
+
+# Load Packages {.unnumbered}
+
+```{r,echo=FALSE,warning=FALSE}
+if(require(pacman)==FALSE) 
+install.packages("pacman")## Loading package manager: pacman
+pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr, effects)
+```
+
+# Business Value Proposition
+
+## Visual
+
+![](images/Copy of poster Value proposition canvas simple white.png)
+
+## Written
+
+**1. Define the client or audience for your data analysis solution.**
+
+Our client is the Office of the Dean & External Relations. More specifically we will be working with Kirk Bogard, Associate VP for Development and External Relations in FSB.
+
+**2. Define the client jobs. What jobs are your clients trying to get done?**
+
+Understand the performance of FSB based on job placement and salary.
+
+Understand which majors tend to have more students obtain jobs
+
+Attract students, parents, and companies to FSB with facts and figures, rankings, and more
+
+Work with current students to help find them jobs, internships, and other professional experiences
+
+**3. Add pains. What are the pains before, during, and after your customer is trying to get their jobs done? Create a bullet point for every specific pain**
+
+Unstructured data requiring lots of data cleaning before any analysis can begin
+
+Lack of understanding trend changes of student placement and salary over time
+
+Most data is over Farmer as a whole, not specific majors
+
+**4. Add gains. What are the gains that your customer expects to get or will be surprised to benefit from your solution?**
+
+Way of comparing Farmer Students to other schools to understand if student success/failures is specific to Farmer or if there are industry trends
+
+Will obtain specific numbers of placement rates and average salaries for each major of past years
+
+**5. Describe your intended solution. Give a bullet point for each major element of your product or solution.**
+
+Create a a graph that shows average salary per year, per major of Farmer graduates and overlays these to compare
+
+Compare these graphs with national averages from other schools to show FSB's success (if FSB performs better than the national average)
+
+**6. What are the painkillers from your solution? List out those things in your solution that can kill the pain points of your client.**
+
+Understanding of data that has been collected over the last 3 years in a structured way
+
+Having the average salary of each FSB major for past years
+
+Understanding of placement rates for each major
+
+**7. What are the gain creators? List out the items that will add additional value to your customer, above and beyond addressing their current pain points.**
+
+Allow Farmer to promote themselves in comparison to other schools
+
+Our code and graphs provided can be adjusted and added to as FSB gets more data. This will allow them to get average salaries and placements for each year
