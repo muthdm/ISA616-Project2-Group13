@@ -32,7 +32,7 @@ pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr,
 
 ## Visual
 
-![](images/Copy%20of%20poster%20Value%20proposition%20canvas%20simple%20white.png)
+![](images/Copy of poster Value proposition canvas simple white (1).png)
 
 ## Written
 
@@ -42,13 +42,9 @@ Our client is the Office of the Dean & External Relations. More specifically we 
 
 **2. Define the client jobs. What jobs are your clients trying to get done?**
 
-Understand the performance of FSB based on job placement and salary.
+Building relationships with companies and donors
 
-Understand which majors tend to have more students obtain jobs
-
-Attract students, parents, and companies to FSB with facts and figures, rankings, and more
-
-Work with current students to help find them jobs, internships, and other professional experiences
+Raising money for FSB programs
 
 **3. Add pains. What are the pains before, during, and after your customer is trying to get their jobs done? Create a bullet point for every specific pain**
 
