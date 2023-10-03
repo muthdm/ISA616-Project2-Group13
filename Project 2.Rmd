@@ -56,7 +56,7 @@ Unstructured data requiring lots of data cleaning before any analysis can begin
 
 Lack of understanding trend changes of student placement and salary over time
 
-Most data is over Farmer as a whole, not specific majors
+Lack of understanding with FSB majors are performing above/below the national average for salary
 
 **4. Add gains. What are the gains that your customer expects to get or will be surprised to benefit from your solution?**
 
@@ -66,20 +66,24 @@ Will obtain specific numbers of placement rates and average salaries for each ma
 
 **5. Describe your intended solution. Give a bullet point for each major element of your product or solution.**
 
-Create a a graph that shows average salary per year, per major of Farmer graduates and overlays these to compare
+Create a distribution for each specific major that shows salary distribution per year
 
-Compare these graphs with national averages from other schools to show FSB's success (if FSB performs better than the national average)
+Create a visual that overlays each majors salary distribution for each year to evaluate salary increase, decreases, etc
+
+Compare these graphs with national averages from other schools to show FSB’s success (if FSB performs better than the national average)
+
 
 **6. What are the painkillers from your solution? List out those things in your solution that can kill the pain points of your client.**
 
-Understanding of data that has been collected over the last 3 years in a structured way
+Obtaining the distributions for each major’s salries over the past years
 
-Having the average salary of each FSB major for past years
+Raw data will be cleaned
 
-Understanding of placement rates for each major
+Visual that compares the distribution of each major by year
+
 
 **7. What are the gain creators? List out the items that will add additional value to your customer, above and beyond addressing their current pain points.**
 
-Allow Farmer to promote themselves in comparison to other schools
-
 Our code and graphs provided can be adjusted and added to as FSB gets more data. This will allow them to get average salaries and placements for each year
+
+The original data set will be cleaned for other data analysis projects. Future workers can use this data set to save time and run and create different analysis.
