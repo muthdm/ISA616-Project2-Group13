@@ -1,7 +1,7 @@
 ---
 title: Project 2
 author: Samuel Schmitz and David Muth
-date: September 29th, 2023
+date: October 29th, 2023
 output:
   html_document:
     code_folding: show
@@ -87,3 +87,16 @@ Visual that compares the distribution of each major by year
 Our code and graphs provided can be adjusted and added to as FSB gets more data. This will allow them to get average salaries and placements for each year
 
 The original data set will be cleaned for other data analysis projects. Future workers can use this data set to save time and run and create different analysis.
+
+*Importing data*
+```{r}
+data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
+```
+
+*Data Prep*
+```{r}
+na_count <- colSums(is.na(data))
+```
+```{r}
+na_count
+```
