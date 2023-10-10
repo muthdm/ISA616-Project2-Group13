@@ -1,7 +1,7 @@
 ---
 title: Project 2
 author: Samuel Schmitz and David Muth
-date: September 29th, 2023
+date: October 29th, 2023
 output:
   html_document:
     code_folding: show
@@ -32,7 +32,7 @@ pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr,
 
 ## Visual
 
-![](images/Copy of poster Value proposition canvas simple white (1).png)
+![](images/Copy of poster Value proposition canvas simple white.png)
 
 ## Written
 
@@ -42,9 +42,13 @@ Our client is the Office of the Dean & External Relations. More specifically we 
 
 **2. Define the client jobs. What jobs are your clients trying to get done?**
 
-Building relationships with companies and donors
+Understand the performance of FSB based on job placement and salary.
 
-Raising money for FSB programs
+Understand which majors tend to have more students obtain jobs
+
+Attract students, parents, and companies to FSB with facts and figures, rankings, and more
+
+Work with current students to help find them jobs, internships, and other professional experiences
 
 **3. Add pains. What are the pains before, during, and after your customer is trying to get their jobs done? Create a bullet point for every specific pain**
 
@@ -66,18 +70,34 @@ Create a distribution for each specific major that shows salary distribution per
 
 Create a visual that overlays each majors salary distribution for each year to evaluate salary increase, decreases, etc
 
-Compare these graphs with national averages from other schools to show FSB's success (if FSB performs better than the national average)
+Compare these graphs with national averages from other schools to show FSB’s success (if FSB performs better than the national average)
+
 
 **6. What are the painkillers from your solution? List out those things in your solution that can kill the pain points of your client.**
 
-Obtaining the distributions for each major's salries over the past years
+Obtaining the distributions for each major’s salries over the past years
 
 Raw data will be cleaned
 
 Visual that compares the distribution of each major by year
+
 
 **7. What are the gain creators? List out the items that will add additional value to your customer, above and beyond addressing their current pain points.**
 
 Our code and graphs provided can be adjusted and added to as FSB gets more data. This will allow them to get average salaries and placements for each year
 
 The original data set will be cleaned for other data analysis projects. Future workers can use this data set to save time and run and create different analysis.
+
+*Importing data*
+```{r}
+data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
+```
+
+*Data Prep*
+```{r}
+na_count <- colSums(is.na(data))
+```
+```{r}
+na_count
+```
+>>>>>>> b65e184feb0590f7dca26b1bfef7192758d538eb
