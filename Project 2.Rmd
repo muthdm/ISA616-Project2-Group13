@@ -184,10 +184,16 @@ The dataset contains three years of data representing FSB graduates, including g
 ## Data Analysis
 
 ```{r}
-print(str(data))
+skim(data)
 ```
-
-
+```{r}
+levels(data$major1)
+levels(data$major2)
+table(data$survey_plans)
+table(data$Gender)
+table(data$IPEDS.Race.Ethnicity)
+table(data$survey_company)
+```
 ## *Data Prep*
 ```{r}
 library(skimr)
