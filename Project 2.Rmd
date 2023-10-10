@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: Project 2
 author: Samuel Schmitz and David Muth
@@ -95,8 +96,10 @@ data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
 
 *Data Prep*
 ```{r}
-na_count <- colSums(is.na(data))
+library(skimr)
+skim(data)
 ```
+The variables 
 ```{r}
-na_count
+sessionInfo()
 ```
