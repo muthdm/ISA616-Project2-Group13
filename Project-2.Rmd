@@ -186,9 +186,17 @@ The dataset contains three years of data representing FSB graduates, including g
 ```{r}
 skim(data)
 ```
+
+### Selected Variables
+
+Based on our BVP, not all variables within the data will be used. The following variables we plan on using to evaluate salary major are: **major1, major2, survey_plans, Gender, IPEDS.Race.Ethnicity, Year.x,** and **survey_salary.**
+
+Below is more information on each of these variables. Something to note is for **survey_company**, we found the top 20 companies based on the frequency of responses. We will use this companies to analyze whether a company offers similar salaries regardless of majors.
+
 ```{r}
 levels(data$major1)
 levels(data$major2)
+levels(data$Year.x)
 table(data$survey_plans)
 table(data$Gender)
 table(data$IPEDS.Race.Ethnicity)
