@@ -217,29 +217,42 @@ head(top20sorted, 20)
 ```
 
 ```{r}
-data$survey_company[data$survey_company == "DELOITTE CONSULTING"] = "DELOITTE"
+name_mapping <- c("EY" = "EY", 
+                  "E&Y" = "EY",
+                  "ERNST & YOUNG" = "EY",
+                  "E AND Y" = "EY")
 ```
+
+```{r}
+data$survey_company <- str_replace_all(data$survey_company, name_mapping)
+```
+
+```{r}
+top20companies = as.data.frame(table(data$survey_company))
+top20sorted = top20companies[order(-top20companies$Freq), ]
+head(top20sorted, 20)
+```
+
+
+
 
 ### Mean Imputation
+We imputed the average salary for each major for all responses with a missing salary response.
 ```{r}
-# Calculate the mean salary for each major
-mean_salary_by_major <- data %>%
-  group_by(major1) %>%
-  summarize(mean_salary = mean(survey_salary, na.rm = TRUE))
-
-# Merge the mean salary information back into the original data frame
-data <- data %>%
-  left_join(mean_salary_by_major, by = "major1")
-
-# Impute missing salary values with the mean salary for that major
-data$salary[is.na(data$survey_salary)] <- data$mean_salary[is.na(data$survey_salary)]
-
-# Remove the mean_salary column if you don't need it anymore
-data <- data %>% select(-mean_salary)
+imputed_data = data %>% 
+  group_by(major1) %>% 
+  dplyr::mutate(survey_salary=ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) %>% 
+  ungroup()
 ```
+
+### Removing Observations
+We only kept observations for students who said they have accepted a fulltime or parttime job ignoring observations for students continuing education as it is not the focus of our analyses.
 ```{r}
-head(data)
+filtered_data <- imputed_data %>%
+  filter(survey_plans %in% c("accepted fulltime job", "accepted parttime job"))
+head(filtered_data)
 ```
+
 
 ## *Data Prep*
 ```{r}
