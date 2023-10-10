@@ -25,7 +25,7 @@ knitr::opts_chunk$set(fig.width=8, fig.height=6)
 ```{r,echo=FALSE,warning=FALSE}
 if(require(pacman)==FALSE) 
 install.packages("pacman")## Loading package manager: pacman
-pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr, effects)
+pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr, effects, dplyr)
 ```
 
 # Business Value Proposition
@@ -196,7 +196,7 @@ Below is more information on each of these variables. Something to note is for *
 ```{r}
 levels(data$major1)
 levels(data$major2)
-levels(data$Year.x)
+table(data$year.x)
 table(data$survey_plans)
 table(data$Gender)
 table(data$IPEDS.Race.Ethnicity)
@@ -220,6 +220,26 @@ head(top20sorted, 20)
 data$survey_company[data$survey_company == "DELOITTE CONSULTING"] = "DELOITTE"
 ```
 
+### Mean Imputation
+```{r}
+# Calculate the mean salary for each major
+mean_salary_by_major <- data %>%
+  group_by(major1) %>%
+  summarize(mean_salary = mean(survey_salary, na.rm = TRUE))
+
+# Merge the mean salary information back into the original data frame
+data <- data %>%
+  left_join(mean_salary_by_major, by = "major1")
+
+# Impute missing salary values with the mean salary for that major
+data$salary[is.na(data$survey_salary)] <- data$mean_salary[is.na(data$survey_salary)]
+
+# Remove the mean_salary column if you don't need it anymore
+data <- data %>% select(-mean_salary)
+```
+```{r}
+head(data)
+```
 
 ## *Data Prep*
 ```{r}
