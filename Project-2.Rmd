@@ -194,7 +194,6 @@ table(data$Gender)
 table(data$IPEDS.Race.Ethnicity)
 ```
 
-### Top Companies
 ```{r}
 top20companies = as.data.frame(table(data$survey_company))
 top20sorted = top20companies[order(-top20companies$Freq), ]
