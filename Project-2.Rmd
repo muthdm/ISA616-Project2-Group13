@@ -202,11 +202,24 @@ table(data$Gender)
 table(data$IPEDS.Race.Ethnicity)
 ```
 
+## Cleaning Selected Variables
+
+### survey_company
+
+We first wanted to find the companies that hire the most students from Farmer. We capitalized all letters so we did not have to worry about case sensitivity while searching for frequencies. We wanted to find the companies with the highest frequencies in order to compare the salaries of each major.
+
 ```{r}
+data$survey_company = toupper(data$survey_company)
+
 top20companies = as.data.frame(table(data$survey_company))
 top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 20)
 ```
+
+```{r}
+data$survey_company[data$survey_company == "DELOITTE CONSULTING"] = "DELOITTE"
+```
+
 
 ## *Data Prep*
 ```{r}
