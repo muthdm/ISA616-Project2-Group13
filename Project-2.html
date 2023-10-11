@@ -2943,8 +2943,8 @@ projects. Future workers can use this data set to save time and run and
 create different analysis.</p>
 </div>
 </div>
-<div id="data-cleaning" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Data Cleaning</h1>
+<div id="data-intoduction" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Data Intoduction</h1>
 <div id="importing-data" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Importing Data</h2>
 <pre class="r"><code>data = readRDS(file = &quot;FSB_BI_Survey_2019_2021.rds&quot;)</code></pre>
@@ -3633,21 +3633,21 @@ in which job is located</p>
 </tbody>
 </table>
 </div>
-<div id="selection-of-relevant-variables" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Selection of Relevant
-Variables</h2>
+</div>
+<div id="selection-of-relevant-variables" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Selection of Relevant
+Variables</h1>
 <p>Based on our BVP, not all variables within the data will be used. The
 following variables we plan on using to evaluate salary major are:
-<strong>major1, major2, survey_plans, Gender, IPEDS.Race.Ethnicity,
-Year.x,</strong> and <strong>survey_salary.</strong></p>
-<p>Below is more information on each of these variables. Something to
-note is for <strong>survey_company</strong>, we found the top 20
-companies based on the frequency of responses. We will use this
-companies to analyze whether a company offers similar salaries
-regardless of majors.</p>
-<div id="selected-variables-levels" class="section level3" number="2.4.1">
-<h3><span class="header-section-number">2.4.1</span> Selected Variables
-Levels</h3>
+<strong>major1, survey_plans, Gender, IPEDS.Race.Ethnicity, Year.x,
+survey_company</strong> and <strong>survey_salary.</strong></p>
+<p>Below is more information on each of these variables. All the
+variable selected except for <strong>survey_company</strong> and
+<strong>survey_salary</strong> had a drop down menu to choose from,
+meaning there were no missing values.</p>
+<div id="selected-variables-levels" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Selected Variables
+Levels</h2>
 <pre class="r"><code>levels(data$major1)</code></pre>
 <pre><code>##  [1] &quot;Accountancy&quot;                    &quot;Business Analytics&quot;            
 ##  [3] &quot;Business Economics&quot;             &quot;Entrepreneurship&quot;              
@@ -3656,13 +3656,6 @@ Levels</h3>
 ##  [9] &quot;Interdisciplinary Bus Managemt&quot; &quot;Management and Leadership&quot;     
 ## [11] &quot;Management and Organizations&quot;   &quot;Marketing&quot;                     
 ## [13] &quot;Supply Chain &amp; Operations Mgmt&quot;</code></pre>
-<pre class="r"><code>levels(data$major2)</code></pre>
-<pre><code>##  [1] &quot;Business Economics&quot;             &quot;Entrepreneurship&quot;              
-##  [3] &quot;Finance&quot;                        &quot;Human Capital Mgmt&amp; Leadership&quot;
-##  [5] &quot;Information Systems&quot;            &quot;Interdisciplinary Bus Managemt&quot;
-##  [7] &quot;Business Analytics&quot;             &quot;Management and Leadership&quot;     
-##  [9] &quot;Marketing&quot;                      &quot;Supply Chain &amp; Operations Mgmt&quot;
-## [11] &quot;none&quot;</code></pre>
 <pre class="r"><code>table(data$year.x)</code></pre>
 <pre><code>## 
 ## 2019 2020 2021 
@@ -3695,13 +3688,19 @@ Levels</h3>
 ##                                9                             2480</code></pre>
 </div>
 </div>
-<div id="top-companies" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Top Companies</h2>
-<p>We first wanted to find the companies that hire the most students
-from Farmer. We capitalized all letters so we did not have to worry
-about case sensitivity while searching for frequencies. We wanted to
-find the companies with the highest frequencies in order to compare the
-salaries of each major.</p>
+<div id="date-cleaning" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Date Cleaning</h1>
+<p>The variables that required cleaning were
+<strong>survey_company</strong>, <strong>survey_plans</strong>, and
+<strong>survey_salary</strong>.</p>
+<div id="survey_company" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> survey_company</h2>
+<p>For <strong>survey_company</strong>, we wanted to find the companies
+that hire the most students from Farmer. To start, we capitalized all
+letters so we did not have to worry about case sensitivity while
+searching for frequencies. We wanted to find the companies with the
+highest frequencies in order to compare the salaries of each major
+within said companies.</p>
 <pre class="r"><code>data$survey_company = toupper(data$survey_company)
 
 top20companies = as.data.frame(table(data$survey_company))
@@ -3716,570 +3715,81 @@ head(top20sorted, 20)</code></pre>
 counted for. We created new data frames for the top companies starting
 with their first letter to make the process quicker for finding
 inconsistencies.</p>
-<div id="deloitte" class="section level3" number="2.5.1">
-<h3><span class="header-section-number">2.5.1</span> Deloitte</h3>
+<div id="deloitte" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Deloitte</h3>
 <pre class="r"><code>data_d &lt;- data[grep(&#39;^D&#39;, data$survey_company), ]
 
-table(data_d$survey_company)</code></pre>
-<pre><code>## 
-##                         DAC            DANCER SOLUTIONS 
-##                           1                           1 
-##    DAUBY O&#39;CONNOR &amp; ZALESKI   DAUBY, O&#39;CONNOR &amp; ZALESKI 
-##                           1                           1 
-##              DAVID J JOSEPH             DAVID J. JOSEPH 
-##                           1                           1 
-##                DEANHOUSTON+          DELIGHT MINISTRIES 
-##                           1                           1 
-##                    DELL EMC           DELL TECHNOLOGIES 
-##                           2                           1 
-##                    DELOITTE         DELOITTE CONSULTING 
-##                          84                          22 
-##                DELOITTE LLP                DELOITTE TAX 
-##                           1                           1 
-##             DELOITTE, CHINA         DENTAL TECHNOLOGIES 
-##                           1                           1 
-##       DEPARTMENT OF JUSTICE                     DEPPAUL 
-##                           1                           1 
-##               DEWEY&#39;S PIZZA    DHARMA SOUND STUDIOS LLC 
-##                           1                           1 
-##                         DHL            DHL SUPPLY CHAIN 
-##                           9                          16 
-##       DICK&#39;S SPORTING GOODS            DIGITAL ADDITIVE 
-##                           2                           1 
-##   DIMENSIONAL FUND ADVISORS                      DISNEY 
-##                           1                           1 
-## DIVISIONS MAINTENANCE GROUP               DOEREN MAYHEW 
-##                           2                           1 
-##     DOUGHERTY &amp; COMPANY LLC                       DOVER 
-##                           1                           1 
-##           DSV SOLUTIONS LLC                         DSW 
-##                           1                           1 
-##               DUFF &amp; PHELPS 
-##                           2</code></pre>
-<pre class="r"><code>deloitte_mapping = c(&quot;DELOITTE CONSULTING&quot; = &quot;DELOITTE&quot;,
+table(data_d$survey_company)
+
+deloitte_mapping = c(&quot;DELOITTE CONSULTING&quot; = &quot;DELOITTE&quot;,
                      &quot;DELOITTE.&quot; = &quot;DELOITTE&quot;,
                      &quot;DELOITTE, CHINA&quot; = &quot;DELOITTE&quot;,
                      &quot;DELOITTE LLP&quot; = &quot;DELOITTE&quot;,
                      &quot;DELOITTE TAX&quot; = &quot;DELOITTE&quot;)</code></pre>
 </div>
-<div id="dhl" class="section level3" number="2.5.2">
-<h3><span class="header-section-number">2.5.2</span> DHL</h3>
+<div id="dhl" class="section level3" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> DHL</h3>
 <pre class="r"><code>dhl_mapping = c(&quot;DHL SUPPLY CHAIN&quot; = &quot;DHL&quot;)</code></pre>
 </div>
-<div id="ey" class="section level3" number="2.5.3">
-<h3><span class="header-section-number">2.5.3</span> EY</h3>
+<div id="ey" class="section level3" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> EY</h3>
 <pre class="r"><code>data_e &lt;- data[grep(&#39;^E&#39;, data$survey_company), ]
 
-table(data_e$survey_company)</code></pre>
-<pre><code>## 
-##                         E &amp; J GALLO WINERY 
-##                                          1 
-##                                  E&amp;J GALLO 
-##                                          2 
-##                           E&amp;J GALLO WINERY 
-##                                          5 
-##                       E. &amp; J. GALLO WINERY 
-##                                          3 
-##             EAGLE ENGINEERED SOLUTIONS INC 
-##                                          1 
-##                      ECHO GLOBAL LOGISTICS 
-##                                          3 
-##                             ECHO LOGISTICS 
-##                                          2 
-##                          EDGEMONT PARTNERS 
-##                                          1 
-##                               EDWARD JONES 
-##                                          2 
-##                                   EJ GALLO 
-##                                          1 
-##             ELECTRONIC PERFORMANCE SYSTEMS 
-##                                          1 
-##                                  ELI LILLY 
-##                                          1 
-##                        ELI LILLY &amp; COMPANY 
-##                                          1 
-##                      ELI LILLY AND COMPANY 
-##                                          4 
-##                                    EMERSON 
-##                                          1 
-## EMERSON COMMERCIAL &amp; RESIDENTIAL SOLUTIONS 
-##                                          1 
-##                         EMPIRE COMMUNITIES 
-##                                          1 
-##                               ENFUSION LLC 
-##                                          1 
-##                    ENGS COMMERCIAL FIANNCE 
-##                                          1 
-##                      ENTERPRISE RENT-A-CAR 
-##                                          1 
-##                                       EPIC 
-##                                          3 
-##                    EPIC HEALTHCARE SYSTEMS 
-##                                          1 
-##                               EPIC SYSTEMS 
-##                                          3 
-##                   EPIC SYSTEMS CORPORATION 
-##                                          1 
-##                                 EQUITY INC 
-##                                          1 
-##                             EQUITY METHODS 
-##                                          1 
-##                              ERNST &amp; YOUNG 
-##                                          9 
-##                         ERNST &amp; YOUNG (EY) 
-##                                          1 
-##                            ERNST AND YOUNG 
-##                                          7 
-##                                 ETAINPOWER 
-##                                          1 
-##                EVEREST REINSURANCE COMPANY 
-##                                          1 
-##                                     EXELON 
-##                                          1 
-##                               EXOR AMERICA 
-##                                          1 
-##                                 EXP REALTY 
-##                                          1 
-##                                    EXPRESS 
-##                                          1 
-##                          EXPRESS CORPORATE 
-##                                          1 
-##                                         EY 
-##                                         90</code></pre>
-<pre class="r"><code>ey_mapping = c(&quot;EY&quot; = &quot;EY&quot;, 
+table(data_e$survey_company)
+
+
+ey_mapping = c(&quot;EY&quot; = &quot;EY&quot;, 
                   &quot;E&amp;Y&quot; = &quot;EY&quot;,
                   &quot;ERNST &amp; YOUNG&quot; = &quot;EY&quot;,
                   &quot;E AND Y&quot; = &quot;EY&quot;,
                &quot;EY (EY)&quot; = &quot;EY&quot;,
                &quot;ERNST AND YOUNG&quot; = &quot;EY&quot;)</code></pre>
 </div>
-<div id="kpmg" class="section level3" number="2.5.4">
-<h3><span class="header-section-number">2.5.4</span> KPMG</h3>
+<div id="kpmg" class="section level3" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> KPMG</h3>
 <pre class="r"><code>data_k &lt;- data[grep(&#39;^K&#39;, data$survey_company), ]
 
-table(data_k$survey_company)</code></pre>
-<pre><code>## 
-##            KANTAR WORLDPANEL         KAPPA KAPPA GAMMA HQ 
-##                            1                            1 
-##   KATE SCHRODER FOR CONGRESS           KATZ SAPPER MILLER 
-##                            1                            1 
-##            KEHE DISTRIBUTORS                KELLYMITCHELL 
-##                            3                            1 
-##          KELLYMITCHELL GROUP KEMBA FINANCIAL CREDIT UNION 
-##                            1                            1 
-##                     KEMS LTD                        KERRY 
-##                            1                            1 
-##                     KEY BANK      KEYBANC CAPITAL MARKETS 
-##                            3                            5 
-##                      KEYBANK                      KEYENCE 
-##                           13                            1 
-##          KEYENCE CORPORATION                        KEYOT 
-##                            2                            1 
-##                KEYOT CREW212               KIMBERLY-CLARK 
-##                            1                            4 
-##   KIMBERLY-CLARK CORPORATION               KIMBERLY CLARK 
-##                            1                            1 
-##                   KIRSCH CPA                       KOHL&#39;S 
-##                            1                            5 
-##           KOHL&#39;S CORPORATION                 KOLAR DESIGN 
-##                            1                            1 
-##                        KONIS                         KPMG 
-##                            1                           38 
-##                       KROGER                   KROGER CO. 
-##                            3                            1</code></pre>
-<pre class="r"><code>kpmg_mapping = c(&quot;KLYNVELD PEAT MARWICK GOERDELER&quot; = &quot;KPMG&quot;)</code></pre>
+table(data_k$survey_company)
+
+kpmg_mapping = c(&quot;KLYNVELD PEAT MARWICK GOERDELER&quot; = &quot;KPMG&quot;)</code></pre>
 </div>
-<div id="pwc" class="section level3" number="2.5.5">
-<h3><span class="header-section-number">2.5.5</span> PWC</h3>
+<div id="pwc" class="section level3" number="4.1.5">
+<h3><span class="header-section-number">4.1.5</span> PWC</h3>
 <pre class="r"><code>data_p &lt;- data[grep(&#39;^P&#39;, data$survey_company), ]
 
-table(data_p$survey_company)</code></pre>
-<pre><code>## 
-##                                P&amp;G               P.L. MARKETING, INC. 
-##                                  1                                  1 
-##                              PARED            PARK PLACE TECHNOLOGIES 
-##                                  1                                  1 
-##      PARK PLACE TECHNOLOGIES, INC.                    PARKER HANNIFIN 
-##                                  1                                  3 
-##                   PARKING ADVISORS                   PARTNERS CAPITAL 
-##                                  1                                  1 
-##        PAVILION, A MERCER PRACTICE           PELOTON CONSULTING GROUP 
-##                                  1                                 11 
-##                      PELOTON GROUP           PELOTON GROUP CONSULTING 
-##                                  1                                  1 
-##               PENN NATIONAL GAMING                    PEOPLES BANCORP 
-##                                  2                                  1 
-##                       PEOPLES BANK                     PEP PROMOTIONS 
-##                                  2                                  1 
-##                            PEPSICO                  PEPSICO-FRITO LAY 
-##                                 14                                  1 
-##                  PEPSICO FRITO-LAY PERFORMANCE TRUST CAPITAL PARTNERS 
-##                                  7                                  1 
-##                                PFK               PFL - ORR FELLOWSHIP 
-##                                  1                                  1 
-##                   PGIM REAL ESTATE                                PHD 
-##                                  1                                  1 
-##                      PHD WORLDWIDE                    PIKE ELECTRICAL 
-##                                  1                                  1 
-##                           PILOT 44                     PILOT FLYING J 
-##                                  1                                  1 
-##                          PINTEREST                       PLANTE MORAN 
-##                                  1                                  7 
-##                                PNC                           PNC BANK 
-##                                  3                                  6 
-##             PNC FINANCIAL SERVICES       PNC FINANCIAL SERVICES GROUP 
-##                                  8                                  2 
-##                            POLYONE                POLYONE CORPORATION 
-##                                  1                                  1 
-##           PORTABLE SOLUTIONS GROUP                 POWER CONSTRUCTION 
-##                                  1                                  1 
-##                     PPG INDUSTRIES                  PRETIUM PACKAGING 
-##                                  1                                  1 
-##            PRICEWATERHOUSE COOPERS             PRICEWATERHOUSECOOPERS 
-##                                  2                                  3 
-##                   PROCTER &amp; GAMBLE                 PROCTER AND GAMBLE 
-##                                  9                                  2 
-##                          PROCURSYS              PROGRESSIVE INSURANCE 
-##                                  1                                  6 
-##                   PROLINK STAFFING             PROP OCEAN CORPORATION 
-##                                  1                                  1 
-##                          PROTIVITI                  PROVISIO PARTNERS 
-##                                 16                                  1 
-##           PRUDENTIAL CAPITAL GROUP         PRUDENTIAL PRIVATE CAPITAL 
-##                                  1                                  1 
-##                   PUBLICIS SAPIENT                                PWC 
-##                                  2                                 40 
-##              PWC CORPORATE FINANCE          PWC CORPORATE FINANCE LLC 
-##                                  1                                  1</code></pre>
-<pre class="r"><code>pwc_mapping = c(&quot;PRICEWATERHOUSECOOPERS&quot; = &quot;PWC&quot;, 
+table(data_p$survey_company)
+
+pwc_mapping = c(&quot;PRICEWATERHOUSECOOPERS&quot; = &quot;PWC&quot;, 
                 &quot;PRICEWATERHOUSECOOPERS LLP&quot; = &quot;PWC&quot;, 
                 &quot;PWC LLP&quot; = &quot;PWC&quot;)</code></pre>
 </div>
-<div id="textron" class="section level3" number="2.5.6">
-<h3><span class="header-section-number">2.5.6</span> Textron</h3>
+<div id="textron" class="section level3" number="4.1.6">
+<h3><span class="header-section-number">4.1.6</span> Textron</h3>
 <pre class="r"><code>data_t &lt;- data[grep(&#39;^T&#39;, data$survey_company), ]
 
-table(data_t$survey_company)</code></pre>
-<pre><code>## 
-##                                    TARGET 
-##                                         4 
-##                             TD AMERITRADE 
-##                                         1 
-##                           TE CONNECTIVITY 
-##                                         1 
-##                          TECH FOR AMERICA 
-##                                         1 
-##                     TECHTRONIC INDUSTRIES 
-##                                         1 
-##                                      TEND 
-##                                         1 
-##         TENNESSEE DEPARTMENT OF EDUCATION 
-##                                         1 
-##                                 TERILLIUM 
-##                                        16 
-##                          TERRABOOST MEDIA 
-##                                         1 
-##                                 TERRILIUM 
-##                                         1 
-##                                     TESLA 
-##                                         1 
-##                                   TEXTRON 
-##                                        34 
-##                          TEXTRON AVIATION 
-##                                         5 
-##              TEXTRON SPECIALIZED VEHICLES 
-##                                         6 
-##                           TEXTRON SYSTEMS 
-##                                         5 
-##         TEXTRON SYSTEMS: LYCOMING ENGINES 
-##                                         1 
-##                             THE 811 GROUP 
-##                                         1 
-## THE CHAMBER OF GREATER SPRINGFIELD (OHIO) 
-##                                         1 
-##                     THE CHAMBERLAIN GROUP 
-##                                         1 
-##        THE CINCINNATI INSURANCE COMPANIES 
-##                                         1 
-##          THE CINCINNATI INSURANCE COMPANY 
-##                                         1 
-##                THE DAVID J JOSEPH COMPANY 
-##                                         2 
-##               THE DAVID J. JOSEPH COMPANY 
-##                                         1 
-##      THE GOODYEAR TIRE AND RUBBER COMPANY 
-##                                         1 
-##                         THE HACKETT GROUP 
-##                                         5 
-##                       THE HERSHEY COMPANY 
-##                                         5 
-##                         THE HILLMAN GROUP 
-##                                         1 
-##                            THE HOME DEPOT 
-##                                         1 
-##                      THE ISABELLA COMPANY 
-##                                         1 
-##                            THE KROGER CO. 
-##                                         1 
-##                 THE MARCUS GRAHAM PROJECT 
-##                                         1 
-##                          THE MATHER GROUP 
-##                                         1 
-##              THE MAYFIELD SAND RIDGE CLUB 
-##                                         1 
-##                     THE MCSHANE COMPANIES 
-##                                         1 
-##                     THE MOREY CORPORATION 
-##                                         1 
-##                       THE NIELSEN COMPANY 
-##                                         1 
-##                             THE NPD GROUP 
-##                                         2 
-##                         THE NRP GROUP LLC 
-##                                         1 
-##         THE REYNOLDS AND REYNOLDS COMPANY 
-##                                         1 
-##                           THE SCION GROUP 
-##                                         2 
-##            THE SCOTTS MIRACLE-GRO COMPANY 
-##                                         1 
-##                     THE SUPERLATIVE GROUP 
-##                                         1 
-##                         THE SYGMA NETWORK 
-##                                         1 
-##                      THE TECHNOLOGY HOUSE 
-##                                         1 
-##                         THE TJX COMPANIES 
-##                                         1 
-##                            THE TRADE DESK 
-##                                         1 
-##               THE UNIVERSITY OF EDINBURGH 
-##                                         1 
-##                   THE WALT DISNEY COMPANY 
-##                                         1 
-##                           THE WHITE HOUSE 
-##                                         1 
-##                            THINK PATENTED 
-##                                         1 
-##                         THOMPSON FLANAGAN 
-##                                         1 
-##                             TJX COMPANIES 
-##                                         1 
-##                   TOTAL QUALITY LOGISTICS 
-##                                         5 
-##                     TOTAL SYSTEM SERVICES 
-##                                         1 
-##                                       TQL 
-##                                         7 
-##                      TRANSPARENT PARTNERS 
-##                                         1 
-##              TRANSPERFECT LEGAL SOLUTIONS 
-##                                         1 
-##                        TRANSPORTATION ONE 
-##                                         1 
-##                                  TRANZACT 
-##                                         1 
-##                                 TRAVELERS 
-##                                         1 
-##                 TRI-COUNTY BAPTIST CHURCH 
-##                                         1 
-##                              TRIBALVISION 
-##                                         1 
-##                                 TRIG INC. 
-##                                         1 
-##                                   TRIMBLE 
-##                                         1 
-##               TRISTATE FINANCIAL ADVISORS 
-##                                         1 
-##                    TS TECH AMERICAS, INC. 
-##                                         1 
-##                       TURNER CONSTRUCTION 
-##                                         1 
-##                          TURQUOISE YACHTS 
-##                                         1</code></pre>
-<pre class="r"><code>textron_mapping = c(&quot;TEXTRON AVIATION&quot; = &quot;TEXTRON&quot;, 
+table(data_t$survey_company)
+
+textron_mapping = c(&quot;TEXTRON AVIATION&quot; = &quot;TEXTRON&quot;, 
                     &quot;TEXTRON SPECIALIZED VEHICLES&quot; = &quot;TEXTRON&quot;,
                     &quot;TEXTRON SYSTEMS&quot; = &quot;TEXTRON&quot;,
                     &quot;TEXTRON SYSTEMS: LYCOMING ENGINES&quot; = &quot;TEXTRON&quot;)</code></pre>
 </div>
-<div id="abercrombie-fitch" class="section level3" number="2.5.7">
-<h3><span class="header-section-number">2.5.7</span> Abercrombie &amp;
+<div id="abercrombie-fitch" class="section level3" number="4.1.7">
+<h3><span class="header-section-number">4.1.7</span> Abercrombie &amp;
 Fitch</h3>
 <pre class="r"><code>data_a &lt;- data[grep(&#39;^A&#39;, data$survey_company), ]
 
-table(data_a$survey_company)</code></pre>
-<pre><code>## 
-##                                     A J GALLAGHER 
-##                                                 1 
-##                                            AARETE 
-##                                                 1 
-##                                            ABBOTT 
-##                                                 3 
-##                                  ABBOTT NUTRITION 
-##                                                 3 
-##                                            ABBVIE 
-##                                                 1 
-##                                       ABERCROMBIE 
-##                                                 1 
-##                               ABERCROMBIE &amp; FITCH 
-##                                                28 
-##                                         ACCENTURE 
-##                                                 8 
-##                                           ACCUITY 
-##                                                 1 
-##                                      ACE HARDWARE 
-##                                                 1 
-## ADVANTAGE SOLUTIONS: SALES, MARKETING, TECHNOLOGY 
-##                                                 1 
-##                                           AEROTEK 
-##                                                 2 
-##                                             AETNA 
-##                                                 1 
-##                                        AGS GAMING 
-##                                                 1 
-##                                           AHALOGY 
-##                                                 2 
-##                                               AIG 
-##                                                 1 
-##                        AIR FORCE CIVILIAN SERVICE 
-##                                                 1 
-##                     AIR FORCE RESEARCH LABORATORY 
-##                                                 1 
-##                                              ALDI 
-##                                                 2 
-##                                           ALDI US 
-##                                                 2 
-##                                          ALDI USA 
-##                                                 1 
-##                                  ALIGHT SOLUTIONS 
-##                                                 1 
-##                                     ALLEGION, PLC 
-##                                                 1 
-##                                     ALLIANCE DATA 
-##                                                 1 
-##                        ALLIANCE DEFENDING FREEDOM 
-##                                                 1 
-##                                 ALLIANCEBERNSTEIN 
-##                                                 1 
-##                                          ALLSTATE 
-##                                                 1 
-##                                       ALPHASIGHTS 
-##                                                 3 
-##                                          ALTO IRA 
-##                                                 1 
-##                                       ALTUS GROUP 
-##                                                 1 
-##                                  ALVAREZ &amp; MARSAL 
-##                                                 1 
-##                                ALVAREZ AND MARSAL 
-##                                                 2 
-##                                            AMAZON 
-##                                                12 
-##                               AMAZON WEB SERVICES 
-##                                                 1 
-##                             AMERICAN CUTTING EDGE 
-##                                                 1 
-##                                    AMERICAN EAGLE 
-##                                                 1 
-##                         AMERICAN EAGLE OUTFITTERS 
-##                                                 4 
-##                   AMERICAN EAGLE OUTFITTERS, INC. 
-##                                                 2 
-##                           AMERICAN ELECTRIC POWER 
-##                                                 1 
-##                     AMERICAN ELECTRIC POWER (AEP) 
-##                                                 1 
-##                AMERICAN INTERNATIONAL GROUP (AIG) 
-##                                                 1 
-##                                        AMERICORPS 
-##                                                 1 
-##   AMERIPRISE FINANCIAL - REDSTONE WEALTH ADVISORS 
-##                                                 1 
-##                     AMERIPRISE FINANCIAL SERVICES 
-##                                                 1 
-##                                   AML RIGHTSOURCE 
-##                                                 1 
-##                                    ANALYSIS GROUP 
-##                                                 1 
-##                                          ANDERSEN 
-##                                                 1 
-##                                      ANDERSEN TAX 
-##                                                 1 
-##                                    ANHEUSER-BUSCH 
-##                                                 1 
-##                                            ANKURA 
-##                                                 1 
-##                                 ANKURA CONSULTING 
-##                                                 1 
-##                                        ANTHEM INC 
-##                                                 1 
-##                                               AON 
-##                                                 5 
-##                                           ARCBEST 
-##                                                 1 
-##                                         ARKMALIBU 
-##                                                 1 
-##                                  ARRIVE LOGISTICS 
-##                                                19 
-##                               ARTHUR J. GALLAGHER 
-##                                                 1 
-##                              ASSET CAMPUS HOUSING 
-##                                                 1 
-##                                   ASSOCIATED BANK 
-##                                                 1 
-##                                              AT&amp;T 
-##                                                 2 
-##                                    ATLANTA BRAVES 
-##                                                 1 
-##                                   AUDITOR OF OHIO 
-##                                                 1 
-##                                          AUTOZONE 
-##                                                 1 
-##                              AVALUTION CONSULTING 
-##                                                 1 
-##                                    AVERY DENNISON 
-##                                                 3 
-##                         AVIENT (FORMERLY POLYONE) 
-##                                                 3 
-##                                           AVIONOS 
-##                                                 1 
-##                              AVTEX SOLUTIONS, LLC 
-##                                                 1 
-##                                      AXA ADVISING 
-##                                                 1 
-##                                              AYCO 
-##                                                 1 
-##                     AYCO, A GOLDMAN SACHS COMPANY 
-##                                                 1</code></pre>
-<pre class="r"><code>af_mapping = c(&quot;ABERCROMBIE&quot; = &quot;ABERCROMBIE &amp; FITCH&quot;)</code></pre>
+table(data_a$survey_company)
+
+af_mapping = c(&quot;ABERCROMBIE&quot; = &quot;ABERCROMBIE &amp; FITCH&quot;)</code></pre>
 </div>
-<div id="jp-morgan" class="section level3" number="2.5.8">
-<h3><span class="header-section-number">2.5.8</span> JP Morgan</h3>
+<div id="jp-morgan" class="section level3" number="4.1.8">
+<h3><span class="header-section-number">4.1.8</span> JP Morgan</h3>
 <pre class="r"><code>data_j &lt;- data[grep(&#39;^J&#39;, data$survey_company), ]
 
-table(data_j$survey_company)</code></pre>
-<pre><code>## 
-##                      J M SMUCKERS           J.C. BAKER &amp; ASSOCIATES 
-##                                 1                                 1 
-##                        J.P MORGAN                       J.P. MORGAN 
-##                                 1                                 2 
-##     J.P. MORGAN U.S. PRIVATE BANK          JESSUP WEALTH MANAGEMENT 
-##                                 1                                 1 
-##                               JLL                       JMJ PHILLIP 
-##                                 1                                 1 
-##                      JOBPLEX, INC                           JOBVITE 
-##                                 1                                 1 
-##                        JOHN DEERE                 JOHNSON &amp; JOHNSON 
-##                                 1                                 3 
-## JOHNSON &amp; JOHNSON - DEPUY SYNTHES               JONES LANGE LASALLE 
-##                                 1                                 1 
-##                         JP MORGAN               JP MORGAN AND CHASE 
-##                                 9                                 1 
-##                   JP MORGAN CHASE                    JPMORGAN CHASE 
-##                                24                                 2 
-##              JPMORGAN CHASE &amp; CO. 
-##                                 3</code></pre>
-<pre class="r"><code>jpmorgan_mapping = c(&quot;J.P MORGAN&quot; = &quot;JP MORGAN CHASE&quot;,
+table(data_j$survey_company)
+
+jpmorgan_mapping = c(&quot;J.P MORGAN&quot; = &quot;JP MORGAN CHASE&quot;,
                      &quot;J.P. MORGAN&quot; = &quot;JP MORGAN CHASE&quot;,
                      &quot;J.P. MORGAN U.S. PRIVATE BANK&quot; = &quot;JP MORGAN CHASE&quot;,
                      &quot;JP MORGAN&quot; = &quot;JP MORGAN CHASE&quot;,
@@ -4287,140 +3797,25 @@ table(data_j$survey_company)</code></pre>
                      &quot;JP MORGAN AND CHASE&quot; = &quot;JP MORGAN CHASE&quot;, 
                      &quot;JPMORGAN CHASE&quot; = &quot;JP MORGAN CHASE&quot;)</code></pre>
 </div>
-<div id="rsm" class="section level3" number="2.5.9">
-<h3><span class="header-section-number">2.5.9</span> RSM</h3>
+<div id="rsm" class="section level3" number="4.1.9">
+<h3><span class="header-section-number">4.1.9</span> RSM</h3>
 <p>There were no misspellings or inconsistencies for RSM.</p>
 <pre class="r"><code>data_r &lt;- data[grep(&#39;^R&#39;, data$survey_company), ]
 
 table(data_r$survey_company)</code></pre>
-<pre><code>## 
-##                          RADIUS                   RAYMOND JAMES 
-##                               1                               1 
-##                  REAL CHEMISTRY                         REALYNC 
-##                               1                               1 
-##                    RED VENTURES REEF CONSERVATION INTERNATIONAL 
-##                               2                               1 
-##    REINSURANCE GROUP OF AMERICA           RELEVATE HEALTH GROUP 
-##                               1                               1 
-##              RÉMY COINTREAU\r\n             REYES BEER DIVISION 
-##                               1                               1 
-##            REYNOLDS AND REYNOLD           REYNOLDS AND REYNOLDS 
-##                               1                               6 
-##                  RIPPE KINGSTON                RISE INTERACTIVE 
-##                               1                               3 
-##              RISK INTERNATIONAL             RIVER CITY MORTGAGE 
-##                               1                               1 
-##                     RMB CAPITAL                   ROANOKE TRADE 
-##                               1                               1 
-##            ROBERT W BAIRD &amp; CO.                 ROBERT W. BAIRD 
-##                               1                               1 
-##        ROCK FAMILY OF COMPANIES                       ROCK WELL 
-##                               1                               1 
-##                 ROCKET MORTGAGE  ROOT INC., A PART OF ACCENTURE 
-##                               1                               1 
-##                 ROSS STORES INC                             RSM 
-##                               1                              24 
-##             RUBINBROWN ADVISORS                  RUBINBROWN LLP 
-##                               1                               1 
-##                        RYAN LLC 
-##                               1</code></pre>
 </div>
-<div id="coyote-logistics" class="section level3" number="2.5.10">
-<h3><span class="header-section-number">2.5.10</span> Coyote
+<div id="coyote-logistics" class="section level3" number="4.1.10">
+<h3><span class="header-section-number">4.1.10</span> Coyote
 Logistics</h3>
 <pre class="r"><code>data_c &lt;- data[grep(&#39;^C&#39;, data$survey_company), ]
 
-table(data_c$survey_company)</code></pre>
-<pre><code>## 
-##                       C.H. ROBINSON                               CAPCO 
-##                                   2                                   1 
-##                           CAPGEMINI                    CAPGEMINI INVENT 
-##                                   2                                  11 
-##                       CAPITAL GROUP                         CAPITAL ONE 
-##                                   1                                   3 
-##                   CAPITAL ONE, INC.                        CARD CONNECT 
-##                                   1                                   1 
-##                     CARDINAL HEALTH                 CAREW INTERNATIONAL 
-##                                   9                                   1 
-##                             CARGILL     CARSON-DELLOSA PUBLISHING GROUP 
-##                                   1                                   1 
-##                         CATERPILLAR                                CBRE 
-##                                   1                                   2 
-##                         CBT COMPANY                           CDM MEDIA 
-##                                   1                                   1 
-##                                 CDW    CEDAR FAIR ENTERTAINMENT COMPANY 
-##                                  17                                   2 
-##                             CENGAGE                    CENGAGE LEARNING 
-##                                   1                                   1 
-##           CENTRAL GARDEN AND PET CO                              CENTRO 
-##                                   1                                   1 
-##                              CERNER                                 CGI 
-##                                   1                                   2 
-##                          CHALLENGER             CHAMBERLAIN GROUP, INC. 
-##                                   2                                   1 
-##                      CHARLES SCHWAB              CHARTER COMMUNICATIONS 
-##                                   4                                   1 
-##                                CHEP                     CHUBB INSURANCE 
-##                                   1                                   1 
-##                                CIBC                             CIBC US 
-##                                   3                                   3 
-##                               CIGNA                     CINCINNATI BELL 
-##                                   1                                   1 
-##             CINCINNATI INCORPORATED                CINCINNATI INSURANCE 
-##                                   1                                   1 
-##        CINCINNATI INSURANCE COMPANY CINCINNATI ZOO AND BOTANICAL GARDEN 
-##                                   1                                   1 
-##                              CINTAS                          CISION INC 
-##                                  11                                   1 
-##                           CITI BANK                           CITIGROUP 
-##                                   1                                   1 
-##              CLARK SCHAEFER HACKETT                        CLEARSULTING 
-##                                   1                                   2 
-##                    CLEVELAND CLIFFS                    CLEVELAND CLINIC 
-##                                   2                                   1 
-##          CLEVELAND RESEARCH COMPANY                       CNA INSURANCE 
-##                                   3                                   1 
-##                               COACH        COBBLESTONE COMMUNITY CHURCH 
-##                                   1                                   1 
-##                     CODWELL BANKERS                             COHATCH 
-##                                   1                                   2 
-##                     COHEN &amp; COMPANY                   COHEN AND COMPANY 
-##                                   1                                   2 
-##             COLLABORATIVE SOLUTIONS          COLUMBUS SPORTS COMMISSION 
-##                                   5                                   1 
-##                             COMCAST                     COMCAST EFFECTV 
-##                                   1                                   1 
-##                  CONMED CORPORATION                   CONNELLY ELECTRIC 
-##                                   1                                   1 
-##                    CONSTRUCTCONNECT            CORTLAND CAPITAL MARKETS 
-##                                   1                                   1 
-##                         COVERMYMEDS                            COVETRUS 
-##                                   1                                   1 
-##                               COWEN                     COWEN &amp; COMPANY 
-##                                   1                                   1 
-##                              COYOTE                    COYOTE LOGISTICS 
-##                                   1                                  22 
-##                     COYOTELOGISITCS                     CRAMER-KRASSELT 
-##                                   1                                   2 
-##                      CRATE &amp; BARREL                          CROW WORKS 
-##                                   1                                   1 
-##                               CROWE                           CROWE LLP 
-##                                   9                                  13 
-##                                 CRU                    CRUMBS MARKETING 
-##                                   1                                   1 
-##                               CUBEX                             CUMMINS 
-##                                   1                                   1 
-##                       CUMMINS, INC.                            CURALEAF 
-##                                   1                                   1 
-##                            CUROLOGY               CUSTODY DIGITAL GROUP 
-##                                   1                                   1 
-##                          CVS HEALTH 
-##                                   1</code></pre>
-<pre class="r"><code>coyote_mapping = c(&quot;COYOTELOGISITCS&quot; = &quot;COYOTE LOGISTICS&quot;,
+table(data_c$survey_company)
+
+coyote_mapping = c(&quot;COYOTELOGISITCS&quot; = &quot;COYOTE LOGISTICS&quot;,
                     &quot;COYOTE&quot; = &quot;COYOTE LOGISTICS&quot;)</code></pre>
 </div>
-<div id="replacing-inconsistencies" class="section level3" number="2.5.11">
-<h3><span class="header-section-number">2.5.11</span> Replacing
+<div id="replacing-inconsistencies" class="section level3" number="4.1.11">
+<h3><span class="header-section-number">4.1.11</span> Replacing
 Inconsistencies</h3>
 <pre class="r"><code>data$survey_company &lt;- str_replace_all(data$survey_company, ey_mapping)
 
@@ -4439,32 +3834,34 @@ data$survey_company &lt;- str_replace_all(data$survey_company, af_mapping)
 data$survey_company &lt;- str_replace_all(data$survey_company, jpmorgan_mapping)
 
 data$survey_company &lt;- str_replace_all(data$survey_company, coyote_mapping)</code></pre>
+</div>
+<div id="finalized-company-count" class="section level3" number="4.1.12">
+<h3><span class="header-section-number">4.1.12</span> Finalized Company
+Count</h3>
 <pre class="r"><code>top20companies = as.data.frame(table(data$survey_company))
 top20sorted = top20companies[order(-top20companies$Freq), ]
-head(top20sorted, 20)</code></pre>
+head(top20sorted, 10)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"DELOITTE","2":"106","_rn_":"224"},{"1":"EY","2":"106","_rn_":"278"},{"1":"TEXTRON","2":"50","_rn_":"751"},{"1":"PWC","2":"43","_rn_":"645"},{"1":"KPMG","2":"38","_rn_":"465"},{"1":"ABERCROMBIE & FITCH & FITCH","2":"28","_rn_":"11"},{"1":"JP MORGAN CHASE CHASE","2":"27","_rn_":"438"},{"1":"DHL","2":"25","_rn_":"233"},{"1":"RSM","2":"24","_rn_":"677"},{"1":"COYOTE LOGISTICS LOGISTICS","2":"23","_rn_":"199"},{"1":"ARRIVE LOGISTICS","2":"19","_rn_":"60"},{"1":"CDW","2":"17","_rn_":"148"},{"1":"WEST MONROE PARTNERS","2":"17","_rn_":"858"},{"1":"FIFTH THIRD BANK","2":"16","_rn_":"298"},{"1":"PROTIVITI","2":"16","_rn_":"640"},{"1":"TERILLIUM","2":"16","_rn_":"747"},{"1":"JP MORGAN CHASE","2":"14","_rn_":"436"},{"1":"PEPSICO","2":"14","_rn_":"609"},{"1":"CROWE LLP","2":"13","_rn_":"204"},{"1":"INSIGHT2PROFIT","2":"13","_rn_":"416"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Var1"],"name":[1],"type":["fct"],"align":["left"]},{"label":["Freq"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"DELOITTE","2":"106","_rn_":"224"},{"1":"EY","2":"106","_rn_":"278"},{"1":"TEXTRON","2":"50","_rn_":"751"},{"1":"PWC","2":"43","_rn_":"645"},{"1":"KPMG","2":"38","_rn_":"465"},{"1":"ABERCROMBIE & FITCH & FITCH","2":"28","_rn_":"11"},{"1":"JP MORGAN CHASE CHASE","2":"27","_rn_":"438"},{"1":"DHL","2":"25","_rn_":"233"},{"1":"RSM","2":"24","_rn_":"677"},{"1":"COYOTE LOGISTICS LOGISTICS","2":"23","_rn_":"199"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
-<div id="mean-imputation" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> Mean Imputation</h2>
-<p>We imputed the average salary for each major for all responses with a
-missing salary response.</p>
+<div id="survey_salary" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> survey_salary</h2>
+<p>We then imputed the average salary for each major for all responses
+with a missing salary response.</p>
 <pre class="r"><code>imputed_data = data %&gt;% 
   group_by(major1) %&gt;% 
   dplyr::mutate(survey_salary=ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) %&gt;% 
   ungroup()</code></pre>
 </div>
-<div id="removing-observations" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Removing
-Observations</h2>
+<div id="survey_plans" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> survey_plans</h2>
 <p>We only kept observations for students who said they have accepted a
 full-time or part-time job, ignoring observations for students
-continuing education, joing the military, etc. as it is not the focus of
-our analysis.</p>
+continuing education, joining the military, etc..</p>
 <pre class="r"><code>filtered_data &lt;- imputed_data %&gt;%
   filter(survey_plans %in% c(&quot;accepted fulltime job&quot;, &quot;accepted parttime job&quot;))
 head(filtered_data)</code></pre>
@@ -4473,7 +3870,10 @@ head(filtered_data)</code></pre>
 {"columns":[{"label":["nmajor"],"name":[1],"type":["int"],"align":["right"]},{"label":["major1"],"name":[2],"type":["fct"],"align":["left"]},{"label":["major2"],"name":[3],"type":["fct"],"align":["left"]},{"label":["BBRJ"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Business Direct Admit"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Combined Bacc and Masters"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Dean's List"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["First Generation College Stdnt"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["FSB Scholars"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Honors Program"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["President's List"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Study Abroad Courtesy Account"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Transfer Work (Pre-Banner)"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["Cum Laude"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["Magna Cum Laude"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["Summa Cum Laude"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["University Honors"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["UniversityHonors w/Distinction"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["minor1"],"name":[19],"type":["fct"],"align":["left"]},{"label":["minor2"],"name":[20],"type":["fct"],"align":["left"]},{"label":["IPEDS.Race.Ethnicity"],"name":[21],"type":["chr"],"align":["left"]},{"label":["Gender"],"name":[22],"type":["chr"],"align":["left"]},{"label":["GPA.Range"],"name":[23],"type":["chr"],"align":["left"]},{"label":["Term.Code"],"name":[24],"type":["int"],"align":["right"]},{"label":["year.x"],"name":[25],"type":["chr"],"align":["left"]},{"label":["latin_honors"],"name":[26],"type":["chr"],"align":["left"]},{"label":["survey_city"],"name":[27],"type":["chr"],"align":["left"]},{"label":["survey_company"],"name":[28],"type":["chr"],"align":["left"]},{"label":["survey_deptfunc"],"name":[29],"type":["chr"],"align":["left"]},{"label":["survey_gradprogram"],"name":[30],"type":["chr"],"align":["left"]},{"label":["survey_gradschool"],"name":[31],"type":["chr"],"align":["left"]},{"label":["survey_internfour"],"name":[32],"type":["chr"],"align":["left"]},{"label":["survey_internone"],"name":[33],"type":["chr"],"align":["left"]},{"label":["survey_internships"],"name":[34],"type":["chr"],"align":["left"]},{"label":["survey_internthree"],"name":[35],"type":["chr"],"align":["left"]},{"label":["survey_interntwo"],"name":[36],"type":["chr"],"align":["left"]},{"label":["survey_offers"],"name":[37],"type":["chr"],"align":["left"]},{"label":["survey_plans"],"name":[38],"type":["chr"],"align":["left"]},{"label":["survey_pref_field"],"name":[39],"type":["chr"],"align":["left"]},{"label":["survey_pref_loc"],"name":[40],"type":["chr"],"align":["left"]},{"label":["survey_salary"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["survey_state"],"name":[42],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"Finance","3":"none","4":"0","5":"1","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"Business Legal Studies","20":"No Minor","21":"White","22":"Male","23":"3.00 - 3.49","24":"201920","25":"2019","26":"0","27":"Toledo","28":"BAM NUTUAL","29":"Finance","30":"NA","31":"NA","32":"NA","33":"NA","34":"0","35":"NA","36":"NA","37":"0","38":"accepted fulltime job","39":"Yes","40":"Yes","41":"61106.8","42":"Ohio"},{"1":"1","2":"Marketing","3":"none","4":"0","5":"1","6":"0","7":"1","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"1","15":"0","16":"0","17":"0","18":"0","19":"Humanities","20":"Humanities","21":"Asian","22":"Female","23":"3.50 - 4.00","24":"202120","25":"2021","26":"0","27":"Columbus","28":"COHATCH","29":"General Management","30":"NA","31":"NA","32":"NA","33":"Second Time Founders","34":"2","35":"NA","36":"La Soupe","37":"1","38":"accepted fulltime job","39":"Yes","40":"Yes","41":"40000.0","42":"OH"},{"1":"1","2":"Finance","3":"none","4":"0","5":"1","6":"0","7":"0","8":"1","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"Accountancy","20":"Accountancy","21":"White","22":"Male","23":"3.00 - 3.49","24":"202020","25":"2020","26":"0","27":"NA","28":"PWC","29":"NA","30":"NA","31":"NA","32":"NA","33":"Bauer Hockey","34":"2","35":"NA","36":"IHS Markit","37":"NA","38":"accepted fulltime job","39":"NA","40":"NA","41":"61106.8","42":"NA"},{"1":"1","2":"Marketing","3":"none","4":"0","5":"1","6":"0","7":"1","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0","17":"0","18":"0","19":"Supply Chain Management","20":"Supply Chain Management","21":"White","22":"Male","23":"3.00 - 3.49","24":"201920","25":"2019","26":"0","27":"Columbus","28":"ABERCROMBIE & FITCH & FITCH","29":"General Management","30":"NA","31":"NA","32":"NA","33":"Nouveau Vie, LLC.","34":"2","35":"NA","36":"Abercrombie & Fitch","37":"1","38":"accepted fulltime job","39":"Yes","40":"Yes","41":"63500.0","42":"Ohio"},{"1":"1","2":"Marketing","3":"none","4":"0","5":"1","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"1","14":"0","15":"0","16":"0","17":"0","18":"0","19":"Humanities","20":"Humanities","21":"White","22":"Female","23":"3.00 - 3.49","24":"202020","25":"2020","26":"0","27":"Cleveland","28":"MCDONALD'S","29":"Consulting Marketing / Sales Operations / Procurement","30":"NA","31":"NA","32":"Victoria's Secret","33":"CNN / Turner Broadcasting","34":"4","35":"Oxford Medical Aesthetics and Laser","36":"Hylant","37":"4","38":"accepted fulltime job","39":"Yes","40":"Yes","41":"68000.0","42":"OH"},{"1":"1","2":"Finance","3":"none","4":"0","5":"1","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"1","15":"0","16":"0","17":"0","18":"0","19":"Economics","20":"No Minor","21":"White","22":"Female","23":"3.50 - 4.00","24":"201920","25":"2019","26":"Cum Laude","27":"Chicago","28":"EY","29":"Analytics\\r\\n Consulting","30":"NA","31":"NA","32":"NA","33":"T. Marzetti","34":"3","35":"Ernst & Young","36":"Whitehorn Partners","37":"1","38":"accepted fulltime job","39":"Yes","40":"Yes","41":"58000.0","42":"Ohio / USA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>#Closing Session</p>
+</div>
+</div>
+<div id="closing-session" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Closing Session</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.3.1 (2023-06-16 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
@@ -4537,9 +3937,8 @@ head(filtered_data)</code></pre>
 </blockquote>
 </blockquote>
 </div>
-</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogUHJvamVjdCAyDQphdXRob3I6IFNhbXVlbCBTY2htaXR6IGFuZCBEYXZpZCBNdXRoDQpkYXRlOiAiYHIgZm9ybWF0KFN5cy50aW1lKCksICclZCAlQiwgJVknKWAiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogICAgbnVtYmVyX3NlY3Rpb25zOiB5ZXMNCiAgICB0aGVtZTogcmVhZGFibGUNCiAgICB0b2M6IHllcw0KICAgIHRvY19mbG9hdDogeWVzDQogICAgY29kZV9kb3dubG9hZDogeWVzDQogIHdvcmRfZG9jdW1lbnQ6DQogICAgdG9jOiBubw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGZpZy53aWR0aD04LCBmaWcuaGVpZ2h0PTYpDQpgYGANCg0KIyBMb2FkIFBhY2thZ2VzIHsudW5udW1iZXJlZH0NCg0KYGBge3IsZWNobz1GQUxTRSx3YXJuaW5nPUZBTFNFfQ0KaWYocmVxdWlyZShwYWNtYW4pPT1GQUxTRSkgDQppbnN0YWxsLnBhY2thZ2VzKCJwYWNtYW4iKSMjIExvYWRpbmcgcGFja2FnZSBtYW5hZ2VyOiBwYWNtYW4NCnBhY21hbjo6cF9sb2FkKHJlYWR4bCwgZ3B0c3R1ZGlvLCBodHRyLCB0aWR5dmVyc2UsIGNvcnJwbG90LCBEYXRhRXhwbG9yZXIsc2tpbXIsIGVmZmVjdHMsIGRwbHlyKQ0KYGBgDQoNCiMgQnVzaW5lc3MgVmFsdWUgUHJvcG9zaXRpb24NCg0KIyMgVmlzdWFsDQoNCiFbXShpbWFnZXMvQ29weSBvZiBwb3N0ZXIgVmFsdWUgcHJvcG9zaXRpb24gY2FudmFzIHNpbXBsZSB3aGl0ZSAoMikucG5nKQ0KDQojIyBXcml0dGVuDQoNCioqMS4gRGVmaW5lIHRoZSBjbGllbnQgb3IgYXVkaWVuY2UgZm9yIHlvdXIgZGF0YSBhbmFseXNpcyBzb2x1dGlvbi4qKg0KDQpPdXIgY2xpZW50IGlzIHRoZSBPZmZpY2Ugb2YgdGhlIERlYW4gJiBFeHRlcm5hbCBSZWxhdGlvbnMuIE1vcmUgc3BlY2lmaWNhbGx5IHdlIHdpbGwgYmUgd29ya2luZyB3aXRoIEtpcmsgQm9nYXJkLCBBc3NvY2lhdGUgVlAgZm9yIERldmVsb3BtZW50IGFuZCBFeHRlcm5hbCBSZWxhdGlvbnMgaW4gRlNCLg0KDQoqKjIuIERlZmluZSB0aGUgY2xpZW50IGpvYnMuIFdoYXQgam9icyBhcmUgeW91ciBjbGllbnRzIHRyeWluZyB0byBnZXQgZG9uZT8qKg0KDQpCdWlsZGluZyByZWxhdGlvbnNoaXBzIHdpdGggY29tcGFuaWVzIGFuZCBkb25vcnMNCg0KUmFpc2luZyBtb25leSBmb3IgRlNCIHByb2dyYW0NCg0KKiozLiBBZGQgcGFpbnMuIFdoYXQgYXJlIHRoZSBwYWlucyBiZWZvcmUsIGR1cmluZywgYW5kIGFmdGVyIHlvdXIgY3VzdG9tZXIgaXMgdHJ5aW5nIHRvIGdldCB0aGVpciBqb2JzIGRvbmU/IENyZWF0ZSBhIGJ1bGxldCBwb2ludCBmb3IgZXZlcnkgc3BlY2lmaWMgcGFpbioqDQoNClVuc3RydWN0dXJlZCBkYXRhIHJlcXVpcmluZyBsb3RzIG9mIGRhdGEgY2xlYW5pbmcgYmVmb3JlIGFueSBhbmFseXNpcyBjYW4gYmVnaW4NCg0KTGFjayBvZiB1bmRlcnN0YW5kaW5nIHRyZW5kIGNoYW5nZXMgb2Ygc3R1ZGVudCBwbGFjZW1lbnQgYW5kIHNhbGFyeSBvdmVyIHRpbWUNCg0KTGFjayBvZiB1bmRlcnN0YW5kaW5nIHdpdGggRlNCIG1ham9ycyBhcmUgcGVyZm9ybWluZyBhYm92ZS9iZWxvdyB0aGUgbmF0aW9uYWwgYXZlcmFnZSBmb3Igc2FsYXJ5DQoNCioqNC4gQWRkIGdhaW5zLiBXaGF0IGFyZSB0aGUgZ2FpbnMgdGhhdCB5b3VyIGN1c3RvbWVyIGV4cGVjdHMgdG8gZ2V0IG9yIHdpbGwgYmUgc3VycHJpc2VkIHRvIGJlbmVmaXQgZnJvbSB5b3VyIHNvbHV0aW9uPyoqDQoNCldheSBvZiBjb21wYXJpbmcgRmFybWVyIFN0dWRlbnRzIHRvIG90aGVyIHNjaG9vbHMgdG8gdW5kZXJzdGFuZCBpZiBzdHVkZW50IHN1Y2Nlc3MvZmFpbHVyZXMgaXMgc3BlY2lmaWMgdG8gRmFybWVyIG9yIGlmIHRoZXJlIGFyZSBpbmR1c3RyeSB0cmVuZHMNCg0KQWxvbmcgd2l0aCBzZWVpbmcgc2FsYXJpZXMgYXJlIGNoYW5naW5nIGZvciBlYWNoIG1ham9yIGJ5IHllYXIsIG91ciBjbGllbnQgd2lsbCBhbHNvIGJlIGFibGUgdG8gc2VlIHRoZSBhdmVyYWdlIHNhbGFyaWVzIGVhY2ggbWFqb3IgZWFybnMgYXQgdG9wIGNvbXBhbmllcy4NCg0KKio1LiBEZXNjcmliZSB5b3VyIGludGVuZGVkIHNvbHV0aW9uLiBHaXZlIGEgYnVsbGV0IHBvaW50IGZvciBlYWNoIG1ham9yIGVsZW1lbnQgb2YgeW91ciBwcm9kdWN0IG9yIHNvbHV0aW9uLioqDQoNCkNyZWF0ZSBhIGRpc3RyaWJ1dGlvbiBmb3IgZWFjaCBzcGVjaWZpYyBtYWpvciB0aGF0IHNob3dzIHNhbGFyeSBkaXN0cmlidXRpb24gcGVyIHllYXINCg0KQ3JlYXRlIGEgYmFyIGNoYXJ0IHRoYXQgY29tcGFyZXMgc2FsYXJpZXMgb2YgZWFjaCBtYWpvciBmb3IgdG9wIGNvbXBhbmllcy4gVGhpcyB3aWxsIGFsbG93IHVzIHRvIHNlZSBpZiBjb21wYW5pZXMgYWx0ZXIgdGhlaXIgc3RhcnRpbmcgc2FsYXJpZXMgZm9yIHN0dWRlbnRzIGJhc2VkIG9uIG1ham9yLg0KDQpDb21wYXJlIHRoZXNlIGdyYXBocyB3aXRoIG5hdGlvbmFsIGF2ZXJhZ2VzIGZyb20gb3RoZXIgc2Nob29scyB0byBzaG93IEZTQidzIHN1Y2Nlc3MgKGlmIEZTQiBwZXJmb3JtcyBiZXR0ZXIgdGhhbiB0aGUgbmF0aW9uYWwgYXZlcmFnZSkNCg0KKio2LiBXaGF0IGFyZSB0aGUgcGFpbmtpbGxlcnMgZnJvbSB5b3VyIHNvbHV0aW9uPyBMaXN0IG91dCB0aG9zZSB0aGluZ3MgaW4geW91ciBzb2x1dGlvbiB0aGF0IGNhbiBraWxsIHRoZSBwYWluIHBvaW50cyBvZiB5b3VyIGNsaWVudC4qKg0KDQpPYnRhaW5pbmcgdGhlIGRpc3RyaWJ1dGlvbnMgZm9yIGVhY2ggbWFqb3IncyBzYWxhcmllcyBvdmVyIHRoZSBwYXN0IHllYXJzDQoNClJhdyBkYXRhIHdpbGwgYmUgY2xlYW5lZA0KDQpWaXN1YWwgdGhhdCBjb21wYXJlcyB0aGUgZGlzdHJpYnV0aW9uIG9mIGVhY2ggbWFqb3IgYnkgeWVhcg0KDQoqKjcuIFdoYXQgYXJlIHRoZSBnYWluIGNyZWF0b3JzPyBMaXN0IG91dCB0aGUgaXRlbXMgdGhhdCB3aWxsIGFkZCBhZGRpdGlvbmFsIHZhbHVlIHRvIHlvdXIgY3VzdG9tZXIsIGFib3ZlIGFuZCBiZXlvbmQgYWRkcmVzc2luZyB0aGVpciBjdXJyZW50IHBhaW4gcG9pbnRzLioqDQoNCk91ciBjb2RlIGFuZCBncmFwaHMgcHJvdmlkZWQgY2FuIGJlIGFkanVzdGVkIGFuZCBhZGRlZCB0byBhcyBGU0IgZ2V0cyBtb3JlIGRhdGEuIFRoaXMgd2lsbCBhbGxvdyB0aGVtIHRvIGdldCBhdmVyYWdlIHNhbGFyaWVzIGFuZCBwbGFjZW1lbnRzIGZvciBlYWNoIHllYXINCg0KVGhlIG9yaWdpbmFsIGRhdGEgc2V0IHdpbGwgYmUgY2xlYW5lZCBmb3Igb3RoZXIgZGF0YSBhbmFseXNpcyBwcm9qZWN0cy4gRnV0dXJlIHdvcmtlcnMgY2FuIHVzZSB0aGlzIGRhdGEgc2V0IHRvIHNhdmUgdGltZSBhbmQgcnVuIGFuZCBjcmVhdGUgZGlmZmVyZW50IGFuYWx5c2lzLg0KDQojIERhdGEgQ2xlYW5pbmcNCg0KIyMgSW1wb3J0aW5nIERhdGENCg0KYGBge3J9DQpkYXRhID0gcmVhZFJEUyhmaWxlID0gIkZTQl9CSV9TdXJ2ZXlfMjAxOV8yMDIxLnJkcyIpDQpgYGANCg0KIyMgRGF0YSBEaWN0aW9uYXJ5DQoNClRoZSBkYXRhc2V0IGNvbnRhaW5zIHRocmVlIHllYXJzIG9mIGRhdGEgcmVwcmVzZW50aW5nIEZTQiBncmFkdWF0ZXMsIGluY2x1ZGluZyBncmFkdWF0ZXMgaW4gMjAxOSwgMjAyMCwgYW5kIDIwMjEuIFRoZSBkYXRhc2V0IGhhcyA0MiB2YXJpYWJsZXMuIFRoZSBzb3VyY2UgaXMgZWl0aGVyIGRlcml2ZWQgZHVyaW5nIGRhdGEgY2xlYW5pbmcvbWVyZ2luZywgZnJvbSB0aGUgT3JhY2xlIEJ1c2luZXNzIEludGVsbGlnZW5jZSBFbnRlcnByaXNlIEVkaXRpb24gKE9CSUVFKSBtYWludGFpbmVkIGJ5IE1pYW1pIGFkbWluc2l0cmF0aW9uLCBvciBmcm9tIHRoZSBzZWxmIHJlcG9ydGVkIHNlbmlvciBzdXJ2ZXkuIFRoZSB2YXJpYWJsZXMgYW5kIHRoZWlyIGRlZmluaXRpb25zIGFyZSBsaXN0ZWQgYmVsb3cuDQoNCioqbm1ham9yKio6IG51bWVyaWMsZGVyaXZlZCwgdGhlIG51bWJlciBvZiBtYWpvcnMNCg0KKiptYWpvcjEqKjogdGV4dCwgT0JJRUUsIGZpcnN0IG1ham9yDQoNCioqbWFqb3IgMioqOiB0ZXh0LCBPQklFRSwgc2Vjb25kIG1ham9yDQoNCioqQkJSSioqOiBiaW5hcnksIE9CSUVFLCBhbiBhdHRyaWJ1dGUgb2YgYSBzdHVkZW50LCBidXQgd2UgZG8gbm90IGtub3cgd2hhdCB0aGlzIHN0YW5kcyBmb3INCg0KKipCdXNpbmVzcyBEaXJlY3QgQWRtaXQqKjogYmluYXJ5LCBPQklFRSwgYSBkaXJlY3QgYWRtaXQgdG8gRlNCIGFzIGEgZmlyc3QgeWVhcg0KDQoqKkNvbWJpbmVkIENhY2MgYW5kIE1hc3RlcnMqKjogYmluYXJ5LCBPQklFRSwgY29tYmluZWQgZGVncmVlIHN0dWRlbnQNCg0KKipEZWFuJ3MgTGlzdCoqOiBiaW5hcnksIE9CSUVFLCBhY2hpZXZlIGRlYW4ncyBsaXN0IHN0YXR1cyBhdCBsZWFzdCBvbmNlDQoNCioqRmlyc3QgR2VuZXJhdGlvbiBDb2xsZWdlIFN0ZG50Kio6IGJpbmFyeSwgT0JJRUUsIGZpcnN0IGdlbmVyYXRpb24gc3R1ZGVudCBzdGF0dXMNCg0KKipGU0IgU2Nob2xhcnMqKjogYmluYXJ5LCBPQklFRSwgRlNCIHNjaG9sYXJzIHByb2dyYW0NCg0KKipIb25vcnMgUHJvZ3JhbSoqOiBiaW5hcnksIE9CSUVFLCBtZW1iZXIgb2YgVW5pdmVyc2l0eSBob25vcnMgcHJvZ3JhbQ0KDQoqKlByZXNpZGVudCdzIGxpc3QqKjogYmluYXJ5LCBPQklFRSwgYWNoaWV2ZWQgcHJlc2lkZW50J3MgbGlzdCBhdCBsZWFzdCBvbmNlDQoNCioqU3R1ZHkgQWJyb3VkIENvdXJ0ZXN5IEFjY291bnQqKjogYmluYXJ5LCBPQklFRSwgZG8gbm90IGtub3cgbWVhbmluZw0KDQoqKlRyYW5zZmVyIFdvcmsqKjogYmluYXJ5LCBPQklFRSwgZG8gbm90IGtub3cgZXhhY3QgbWVhbmluZw0KDQoqKkN1bSBMYXVkZSoqOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgQ3VtIExhdWRlDQoNCioqTWFnbmEgQ3VtIExhdWRlKio6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCBNYWduYSBDdW0gTGF1ZGUNCg0KKipTdW1tYSBDdW0gTGF1ZGUqKjogYmluYXJ5LCBPQklFRSwgZ3JhZHVhdGVkIFN1bW1hIEN1bSBMYXVkZQ0KDQoqKlVuaXZlcnNpdHkgSG9ub3JzKio6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzDQoNCioqVW5pdmVyc2l0eSBIb25vcnMgdy9EaXN0aW5jdGlvbioqOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgd2l0aCBVbml2ZXJzaXR5IEhvbm9ycyB3aXRoIERpc3RpbmN0aW9uDQoNCioqbWlub3IxKio6IHRleHQsIE9CSUVFLCBmaXJzdCBsaXN0ZWQgbWlub3INCg0KKiptaW5vcjIqKjogdGV4dCwgT0JJRUUsIHNlY29uZCBsaXN0ZWQgbWlub3INCg0KKipJUEVEUy5SYWNlLkV0aG5pY2l0eSoqOiB0ZXh0LCBPQklFRSwgcmFjZS9ldGhuaWNpdHkNCg0KKipHZW5kZXIqKjogdGV4dCwgT0JJRUUsIHNleA0KDQoqKkdQQS5SYW5nZSoqOiB0ZXh0LCBPQklFRSwgR1BBIHdpdGhpbiBhIC41IHJhbmdlDQoNCioqVGVybS5Db2RlKio6IG51bWJlcmljLCBPQklFRSwgRmlyc3QgZm91ciBkaWdpdHMgYXJlIHRoZSBwaHlzY2FsIHllYXIgKGJlZ2lubmluZyBpbiBKdWx5LCBlLmcuIEp1bHkgMjAyMCBpcyBGWSAyMDIxKS4gTGFzdCB0d28gZGlnaXRzIGlzIHRoZSB0ZXJtICgxMD1mYWxsLCAxNT13aW50ZXIsIDIwPXNwcmluZywgMzA9c3VtbWVyKQ0KDQoqKlllYXIueCoqOiB0ZXh0LCBkZXJpdmVkLCBmaXJzdCBmb3VyIGRpZ2l0cyBvZiBUZXJtLkNvZGUgc3RvcmVkIGFzIGEgY2hhcmFjdGVyIHZhcmlhYmxlDQoNCioqbGF0aW5faG9ub3JzKio6IHRleHQsIHN1cnZleSwgbGF0aW4gaG9ub3JzIGRlc2lnbmF0aW9uDQoNCioqc3VydmV5X2NpdHkqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGNpdHkgaW4gd2hpY2ggdGhlaXIgam9iIGlzIGxvY2F0ZWQNCg0KKipzdXJ2ZXlfY29tcGFueSoqOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgY29tcGFueSBpbiB3aGljaCB0aGV5IGFjY2VwdGVkIGEgam9iDQoNCioqc3VydmV5X2RlcHRmdW5jKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBqb2IgZnVuY3Rpb24NCg0KKipzdXJ2ZXlfZ3JhZHByb2dyYW0qKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGdyYWR1YXRlIHByb2dyYW0gdGhleSB3aWxsIGJlIGF0dGVuZGluZw0KDQoqKnN1cnZleV9ncmFkc2Nob29sKio6IHRleHQsIHN1cnZleSwgc3R1ZW50IHJlcG9ydGVkIGdyYWR1YXRlIHNjaG9vbCB0aGV5IHdpbGwgYmUgYXR0ZW5kaW5nDQoNCioqc3VydmV5X2ludGVybmZvdXIqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGZvdXJ0aCBpbnRlcm5zaGlwIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKnN1cnZleV9pbnRlcm50aHJlZSoqOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgdGhpcmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCg0KKipzdXJ2ZXlfaW50ZXJudHdvKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzZWNvbmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCg0KKipzdXJ2ZXlfaW50ZXJub25lKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBmaXJzdCBpbnRlcm5zaGlwIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKlN1cnZleV9pbnRlcm5zaGlwcyoqOiB0ZXh0LCBzdXJ2ZXksIFN0dWRlbnQgcmVwb3J0ZWQgbnVtYmVyIG9mIGludGVybnNoaXBzIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKnN1cnZleV9vZmZlcnMqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBvZmZlcnMgZm9yIGZ1bGwgdGltZSBlbXBsb3ltZW50IHJlY2VpdmVkDQoNCioqc3VydmV5X3BsYW5zKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBwbGFucyBhZnRlciBncmFkdWF0aW9uDQoNCioqc3VydmV5X3ByZWZfZmllbGQqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgZmllbGQNCg0KKipzdXJ2ZXlfcHJlZl9sb2MqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgbG9jYXRpb24NCg0KKipzdXJ2ZXlfc2FsYXJ5Kio6IG51bWVyaWMsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzYWxhcnkNCg0KKipzdXJ2ZXlfc3RhdGUqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHN0YXRlIGluIHdoaWNoIGpvYiBpcyBsb2NhdGVkDQoNCiMjIERhdGEgUHJvZmlsZQ0KDQpgYGB7cn0NCnNraW0oZGF0YSkNCmBgYA0KDQojIyBTZWxlY3Rpb24gb2YgUmVsZXZhbnQgVmFyaWFibGVzDQoNCkJhc2VkIG9uIG91ciBCVlAsIG5vdCBhbGwgdmFyaWFibGVzIHdpdGhpbiB0aGUgZGF0YSB3aWxsIGJlIHVzZWQuIFRoZSBmb2xsb3dpbmcgdmFyaWFibGVzIHdlIHBsYW4gb24gdXNpbmcgdG8gZXZhbHVhdGUgc2FsYXJ5IG1ham9yIGFyZTogKiptYWpvcjEsIG1ham9yMiwgc3VydmV5X3BsYW5zLCBHZW5kZXIsIElQRURTLlJhY2UuRXRobmljaXR5LCBZZWFyLngsKiogYW5kICoqc3VydmV5X3NhbGFyeS4qKg0KDQpCZWxvdyBpcyBtb3JlIGluZm9ybWF0aW9uIG9uIGVhY2ggb2YgdGhlc2UgdmFyaWFibGVzLiBTb21ldGhpbmcgdG8gbm90ZSBpcyBmb3IgKipzdXJ2ZXlfY29tcGFueSoqLCB3ZSBmb3VuZCB0aGUgdG9wIDIwIGNvbXBhbmllcyBiYXNlZCBvbiB0aGUgZnJlcXVlbmN5IG9mIHJlc3BvbnNlcy4gV2Ugd2lsbCB1c2UgdGhpcyBjb21wYW5pZXMgdG8gYW5hbHl6ZSB3aGV0aGVyIGEgY29tcGFueSBvZmZlcnMgc2ltaWxhciBzYWxhcmllcyByZWdhcmRsZXNzIG9mIG1ham9ycy4NCg0KIyMjIFNlbGVjdGVkIFZhcmlhYmxlcyBMZXZlbHMNCg0KYGBge3J9DQpsZXZlbHMoZGF0YSRtYWpvcjEpDQpsZXZlbHMoZGF0YSRtYWpvcjIpDQp0YWJsZShkYXRhJHllYXIueCkNCnRhYmxlKGRhdGEkc3VydmV5X3BsYW5zKQ0KdGFibGUoZGF0YSRHZW5kZXIpDQp0YWJsZShkYXRhJElQRURTLlJhY2UuRXRobmljaXR5KQ0KYGBgDQoNCiMjIFRvcCBDb21wYW5pZXMNCg0KV2UgZmlyc3Qgd2FudGVkIHRvIGZpbmQgdGhlIGNvbXBhbmllcyB0aGF0IGhpcmUgdGhlIG1vc3Qgc3R1ZGVudHMgZnJvbSBGYXJtZXIuIFdlIGNhcGl0YWxpemVkIGFsbCBsZXR0ZXJzIHNvIHdlIGRpZCBub3QgaGF2ZSB0byB3b3JyeSBhYm91dCBjYXNlIHNlbnNpdGl2aXR5IHdoaWxlIHNlYXJjaGluZyBmb3IgZnJlcXVlbmNpZXMuIFdlIHdhbnRlZCB0byBmaW5kIHRoZSBjb21wYW5pZXMgd2l0aCB0aGUgaGlnaGVzdCBmcmVxdWVuY2llcyBpbiBvcmRlciB0byBjb21wYXJlIHRoZSBzYWxhcmllcyBvZiBlYWNoIG1ham9yLg0KDQpgYGB7cn0NCmRhdGEkc3VydmV5X2NvbXBhbnkgPSB0b3VwcGVyKGRhdGEkc3VydmV5X2NvbXBhbnkpDQoNCnRvcDIwY29tcGFuaWVzID0gYXMuZGF0YS5mcmFtZSh0YWJsZShkYXRhJHN1cnZleV9jb21wYW55KSkNCnRvcDIwc29ydGVkID0gdG9wMjBjb21wYW5pZXNbb3JkZXIoLXRvcDIwY29tcGFuaWVzJEZyZXEpLCBdDQpoZWFkKHRvcDIwc29ydGVkLCAyMCkNCmBgYA0KDQpXZSB0aGVuIGNsZWFuZWQgdGhlIHRvcCBjb21wYW5pZXMgdG8gZW5zdXJlIGFsbCByZXNwb25zZXMgd2VyZSBjb3VudGVkIGZvci4gV2UgY3JlYXRlZCBuZXcgZGF0YSBmcmFtZXMgZm9yIHRoZSB0b3AgY29tcGFuaWVzIHN0YXJ0aW5nIHdpdGggdGhlaXIgZmlyc3QgbGV0dGVyIHRvIG1ha2UgdGhlIHByb2Nlc3MgcXVpY2tlciBmb3IgZmluZGluZyBpbmNvbnNpc3RlbmNpZXMuDQoNCiMjIyBEZWxvaXR0ZQ0KDQpgYGB7ciBpbmNsdWRlPVRSVUV9DQpkYXRhX2QgPC0gZGF0YVtncmVwKCdeRCcsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfZCRzdXJ2ZXlfY29tcGFueSkNCg0KZGVsb2l0dGVfbWFwcGluZyA9IGMoIkRFTE9JVFRFIENPTlNVTFRJTkciID0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgICAgICJERUxPSVRURS4iID0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgICAgICJERUxPSVRURSwgQ0hJTkEiID0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgICAgICJERUxPSVRURSBMTFAiID0gIkRFTE9JVFRFIiwNCiAgICAgICAgICAgICAgICAgICAgICJERUxPSVRURSBUQVgiID0gIkRFTE9JVFRFIikNCmBgYA0KDQojIyMgREhMDQoNCmBgYHtyIGVjaG89VFJVRX0NCmRobF9tYXBwaW5nID0gYygiREhMIFNVUFBMWSBDSEFJTiIgPSAiREhMIikNCmBgYA0KDQojIyMgRVkNCg0KYGBge3IgZWNobz1UUlVFfQ0KZGF0YV9lIDwtIGRhdGFbZ3JlcCgnXkUnLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX2Ukc3VydmV5X2NvbXBhbnkpDQoNCg0KZXlfbWFwcGluZyA9IGMoIkVZIiA9ICJFWSIsIA0KICAgICAgICAgICAgICAgICAgIkUmWSIgPSAiRVkiLA0KICAgICAgICAgICAgICAgICAgIkVSTlNUICYgWU9VTkciID0gIkVZIiwNCiAgICAgICAgICAgICAgICAgICJFIEFORCBZIiA9ICJFWSIsDQogICAgICAgICAgICAgICAiRVkgKEVZKSIgPSAiRVkiLA0KICAgICAgICAgICAgICAgIkVSTlNUIEFORCBZT1VORyIgPSAiRVkiKQ0KYGBgDQoNCiMjIyBLUE1HDQoNCmBgYHtyIGVjaG89VFJVRX0NCmRhdGFfayA8LSBkYXRhW2dyZXAoJ15LJywgZGF0YSRzdXJ2ZXlfY29tcGFueSksIF0NCg0KdGFibGUoZGF0YV9rJHN1cnZleV9jb21wYW55KQ0KDQprcG1nX21hcHBpbmcgPSBjKCJLTFlOVkVMRCBQRUFUIE1BUldJQ0sgR09FUkRFTEVSIiA9ICJLUE1HIikNCmBgYA0KDQojIyMgUFdDDQoNCmBgYHtyIGVjaG89VFJVRX0NCg0KZGF0YV9wIDwtIGRhdGFbZ3JlcCgnXlAnLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX3Akc3VydmV5X2NvbXBhbnkpDQoNCnB3Y19tYXBwaW5nID0gYygiUFJJQ0VXQVRFUkhPVVNFQ09PUEVSUyIgPSAiUFdDIiwgDQogICAgICAgICAgICAgICAgIlBSSUNFV0FURVJIT1VTRUNPT1BFUlMgTExQIiA9ICJQV0MiLCANCiAgICAgICAgICAgICAgICAiUFdDIExMUCIgPSAiUFdDIikNCmBgYA0KDQojIyMgVGV4dHJvbg0KDQpgYGB7ciBlY2hvPVRSVUV9DQpkYXRhX3QgPC0gZGF0YVtncmVwKCdeVCcsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfdCRzdXJ2ZXlfY29tcGFueSkNCg0KdGV4dHJvbl9tYXBwaW5nID0gYygiVEVYVFJPTiBBVklBVElPTiIgPSAiVEVYVFJPTiIsIA0KICAgICAgICAgICAgICAgICAgICAiVEVYVFJPTiBTUEVDSUFMSVpFRCBWRUhJQ0xFUyIgPSAiVEVYVFJPTiIsDQogICAgICAgICAgICAgICAgICAgICJURVhUUk9OIFNZU1RFTVMiID0gIlRFWFRST04iLA0KICAgICAgICAgICAgICAgICAgICAiVEVYVFJPTiBTWVNURU1TOiBMWUNPTUlORyBFTkdJTkVTIiA9ICJURVhUUk9OIikNCmBgYA0KDQojIyMgQWJlcmNyb21iaWUgJiBGaXRjaA0KDQpgYGB7ciBlY2hvPVRSVUV9DQpkYXRhX2EgPC0gZGF0YVtncmVwKCdeQScsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfYSRzdXJ2ZXlfY29tcGFueSkNCg0KYWZfbWFwcGluZyA9IGMoIkFCRVJDUk9NQklFIiA9ICJBQkVSQ1JPTUJJRSAmIEZJVENIIikNCmBgYA0KDQojIyMgSlAgTW9yZ2FuDQoNCmBgYHtyIGVjaG89VFJVRX0NCmRhdGFfaiA8LSBkYXRhW2dyZXAoJ15KJywgZGF0YSRzdXJ2ZXlfY29tcGFueSksIF0NCg0KdGFibGUoZGF0YV9qJHN1cnZleV9jb21wYW55KQ0KDQpqcG1vcmdhbl9tYXBwaW5nID0gYygiSi5QIE1PUkdBTiIgPSAiSlAgTU9SR0FOIENIQVNFIiwNCiAgICAgICAgICAgICAgICAgICAgICJKLlAuIE1PUkdBTiIgPSAiSlAgTU9SR0FOIENIQVNFIiwNCiAgICAgICAgICAgICAgICAgICAgICJKLlAuIE1PUkdBTiBVLlMuIFBSSVZBVEUgQkFOSyIgPSAiSlAgTU9SR0FOIENIQVNFIiwNCiAgICAgICAgICAgICAgICAgICAgICJKUCBNT1JHQU4iID0gIkpQIE1PUkdBTiBDSEFTRSIsDQogICAgICAgICAgICAgICAgICAgICAiSlBNT1JHQU4gQ0hBU0UgJiBDTy4iID0gIkpQIE1PUkdBTiBDSEFTRSIsIA0KICAgICAgICAgICAgICAgICAgICAgIkpQIE1PUkdBTiBBTkQgQ0hBU0UiID0gIkpQIE1PUkdBTiBDSEFTRSIsIA0KICAgICAgICAgICAgICAgICAgICAgIkpQTU9SR0FOIENIQVNFIiA9ICJKUCBNT1JHQU4gQ0hBU0UiKQ0KYGBgDQoNCiMjIyBSU00NCg0KVGhlcmUgd2VyZSBubyBtaXNzcGVsbGluZ3Mgb3IgaW5jb25zaXN0ZW5jaWVzIGZvciBSU00uDQoNCmBgYHtyIGVjaG89VFJVRX0NCmRhdGFfciA8LSBkYXRhW2dyZXAoJ15SJywgZGF0YSRzdXJ2ZXlfY29tcGFueSksIF0NCg0KdGFibGUoZGF0YV9yJHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCiMjIyBDb3lvdGUgTG9naXN0aWNzDQoNCmBgYHtyIGVjaG89VFJVRX0NCmRhdGFfYyA8LSBkYXRhW2dyZXAoJ15DJywgZGF0YSRzdXJ2ZXlfY29tcGFueSksIF0NCg0KdGFibGUoZGF0YV9jJHN1cnZleV9jb21wYW55KQ0KDQpjb3lvdGVfbWFwcGluZyA9IGMoIkNPWU9URUxPR0lTSVRDUyIgPSAiQ09ZT1RFIExPR0lTVElDUyIsDQogICAgICAgICAgICAgICAgICAgICJDT1lPVEUiID0gIkNPWU9URSBMT0dJU1RJQ1MiKQ0KYGBgDQoNCiMjIyBSZXBsYWNpbmcgSW5jb25zaXN0ZW5jaWVzDQoNCmBgYHtyfQ0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgZXlfbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgZGVsb2l0dGVfbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwga3BtZ19tYXBwaW5nKQ0KDQpkYXRhJHN1cnZleV9jb21wYW55IDwtIHN0cl9yZXBsYWNlX2FsbChkYXRhJHN1cnZleV9jb21wYW55LCBwd2NfbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgZGhsX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIHRleHRyb25fbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgYWZfbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwganBtb3JnYW5fbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgY295b3RlX21hcHBpbmcpDQpgYGANCg0KYGBge3J9DQp0b3AyMGNvbXBhbmllcyA9IGFzLmRhdGEuZnJhbWUodGFibGUoZGF0YSRzdXJ2ZXlfY29tcGFueSkpDQp0b3AyMHNvcnRlZCA9IHRvcDIwY29tcGFuaWVzW29yZGVyKC10b3AyMGNvbXBhbmllcyRGcmVxKSwgXQ0KaGVhZCh0b3AyMHNvcnRlZCwgMjApDQpgYGANCg0KIyMgTWVhbiBJbXB1dGF0aW9uDQoNCldlIGltcHV0ZWQgdGhlIGF2ZXJhZ2Ugc2FsYXJ5IGZvciBlYWNoIG1ham9yIGZvciBhbGwgcmVzcG9uc2VzIHdpdGggYSBtaXNzaW5nIHNhbGFyeSByZXNwb25zZS4NCg0KYGBge3J9DQppbXB1dGVkX2RhdGEgPSBkYXRhICU+JSANCiAgZ3JvdXBfYnkobWFqb3IxKSAlPiUgDQogIGRwbHlyOjptdXRhdGUoc3VydmV5X3NhbGFyeT1pZmVsc2UoaXMubmEoc3VydmV5X3NhbGFyeSksIG1lYW4oc3VydmV5X3NhbGFyeSwgbmEucm0gPSBUUlVFKSwgc3VydmV5X3NhbGFyeSkpICU+JSANCiAgdW5ncm91cCgpDQpgYGANCg0KIyMgUmVtb3ZpbmcgT2JzZXJ2YXRpb25zDQoNCldlIG9ubHkga2VwdCBvYnNlcnZhdGlvbnMgZm9yIHN0dWRlbnRzIHdobyBzYWlkIHRoZXkgaGF2ZSBhY2NlcHRlZCBhIGZ1bGwtdGltZSBvciBwYXJ0LXRpbWUgam9iLCBpZ25vcmluZyBvYnNlcnZhdGlvbnMgZm9yIHN0dWRlbnRzIGNvbnRpbnVpbmcgZWR1Y2F0aW9uLCBqb2luZyB0aGUgbWlsaXRhcnksIGV0Yy4gYXMgaXQgaXMgbm90IHRoZSBmb2N1cyBvZiBvdXIgYW5hbHlzaXMuDQoNCmBgYHtyfQ0KZmlsdGVyZWRfZGF0YSA8LSBpbXB1dGVkX2RhdGEgJT4lDQogIGZpbHRlcihzdXJ2ZXlfcGxhbnMgJWluJSBjKCJhY2NlcHRlZCBmdWxsdGltZSBqb2IiLCAiYWNjZXB0ZWQgcGFydHRpbWUgam9iIikpDQpoZWFkKGZpbHRlcmVkX2RhdGEpDQpgYGANCg0KI0Nsb3NpbmcgU2Vzc2lvbg0KDQpgYGB7cn0NCnNlc3Npb25JbmZvKCkNCmBgYA0KDQo+ID4gPiA+ID4gPiA+IGFiMDQzNDliZTAwZDA0OWMwMTQ3N2MxMmY4MDk1NWZiNTI3MjRjY2YNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogUHJvamVjdCAyDQphdXRob3I6IFNhbXVlbCBTY2htaXR6IGFuZCBEYXZpZCBNdXRoDQpkYXRlOiAiYHIgZm9ybWF0KFN5cy50aW1lKCksICclZCAlQiwgJVknKWAiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgZGZfcHJpbnQ6IHBhZ2VkDQogICAgbnVtYmVyX3NlY3Rpb25zOiB5ZXMNCiAgICB0aGVtZTogcmVhZGFibGUNCiAgICB0b2M6IHllcw0KICAgIHRvY19mbG9hdDogeWVzDQogICAgY29kZV9kb3dubG9hZDogeWVzDQogIHdvcmRfZG9jdW1lbnQ6DQogICAgdG9jOiBubw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGZpZy53aWR0aD04LCBmaWcuaGVpZ2h0PTYpDQpgYGANCg0KIyBMb2FkIFBhY2thZ2VzIHsudW5udW1iZXJlZH0NCg0KYGBge3IsZWNobz1GQUxTRSx3YXJuaW5nPUZBTFNFfQ0KaWYocmVxdWlyZShwYWNtYW4pPT1GQUxTRSkgDQppbnN0YWxsLnBhY2thZ2VzKCJwYWNtYW4iKSMjIExvYWRpbmcgcGFja2FnZSBtYW5hZ2VyOiBwYWNtYW4NCnBhY21hbjo6cF9sb2FkKHJlYWR4bCwgZ3B0c3R1ZGlvLCBodHRyLCB0aWR5dmVyc2UsIGNvcnJwbG90LCBEYXRhRXhwbG9yZXIsc2tpbXIsIGVmZmVjdHMsIGRwbHlyKQ0KYGBgDQoNCiMgQnVzaW5lc3MgVmFsdWUgUHJvcG9zaXRpb24NCg0KIyMgVmlzdWFsDQoNCiFbXShpbWFnZXMvQ29weSBvZiBwb3N0ZXIgVmFsdWUgcHJvcG9zaXRpb24gY2FudmFzIHNpbXBsZSB3aGl0ZSAoMikucG5nKQ0KDQojIyBXcml0dGVuDQoNCioqMS4gRGVmaW5lIHRoZSBjbGllbnQgb3IgYXVkaWVuY2UgZm9yIHlvdXIgZGF0YSBhbmFseXNpcyBzb2x1dGlvbi4qKg0KDQpPdXIgY2xpZW50IGlzIHRoZSBPZmZpY2Ugb2YgdGhlIERlYW4gJiBFeHRlcm5hbCBSZWxhdGlvbnMuIE1vcmUgc3BlY2lmaWNhbGx5IHdlIHdpbGwgYmUgd29ya2luZyB3aXRoIEtpcmsgQm9nYXJkLCBBc3NvY2lhdGUgVlAgZm9yIERldmVsb3BtZW50IGFuZCBFeHRlcm5hbCBSZWxhdGlvbnMgaW4gRlNCLg0KDQoqKjIuIERlZmluZSB0aGUgY2xpZW50IGpvYnMuIFdoYXQgam9icyBhcmUgeW91ciBjbGllbnRzIHRyeWluZyB0byBnZXQgZG9uZT8qKg0KDQpCdWlsZGluZyByZWxhdGlvbnNoaXBzIHdpdGggY29tcGFuaWVzIGFuZCBkb25vcnMNCg0KUmFpc2luZyBtb25leSBmb3IgRlNCIHByb2dyYW0NCg0KKiozLiBBZGQgcGFpbnMuIFdoYXQgYXJlIHRoZSBwYWlucyBiZWZvcmUsIGR1cmluZywgYW5kIGFmdGVyIHlvdXIgY3VzdG9tZXIgaXMgdHJ5aW5nIHRvIGdldCB0aGVpciBqb2JzIGRvbmU/IENyZWF0ZSBhIGJ1bGxldCBwb2ludCBmb3IgZXZlcnkgc3BlY2lmaWMgcGFpbioqDQoNClVuc3RydWN0dXJlZCBkYXRhIHJlcXVpcmluZyBsb3RzIG9mIGRhdGEgY2xlYW5pbmcgYmVmb3JlIGFueSBhbmFseXNpcyBjYW4gYmVnaW4NCg0KTGFjayBvZiB1bmRlcnN0YW5kaW5nIHRyZW5kIGNoYW5nZXMgb2Ygc3R1ZGVudCBwbGFjZW1lbnQgYW5kIHNhbGFyeSBvdmVyIHRpbWUNCg0KTGFjayBvZiB1bmRlcnN0YW5kaW5nIHdpdGggRlNCIG1ham9ycyBhcmUgcGVyZm9ybWluZyBhYm92ZS9iZWxvdyB0aGUgbmF0aW9uYWwgYXZlcmFnZSBmb3Igc2FsYXJ5DQoNCioqNC4gQWRkIGdhaW5zLiBXaGF0IGFyZSB0aGUgZ2FpbnMgdGhhdCB5b3VyIGN1c3RvbWVyIGV4cGVjdHMgdG8gZ2V0IG9yIHdpbGwgYmUgc3VycHJpc2VkIHRvIGJlbmVmaXQgZnJvbSB5b3VyIHNvbHV0aW9uPyoqDQoNCldheSBvZiBjb21wYXJpbmcgRmFybWVyIFN0dWRlbnRzIHRvIG90aGVyIHNjaG9vbHMgdG8gdW5kZXJzdGFuZCBpZiBzdHVkZW50IHN1Y2Nlc3MvZmFpbHVyZXMgaXMgc3BlY2lmaWMgdG8gRmFybWVyIG9yIGlmIHRoZXJlIGFyZSBpbmR1c3RyeSB0cmVuZHMNCg0KQWxvbmcgd2l0aCBzZWVpbmcgc2FsYXJpZXMgYXJlIGNoYW5naW5nIGZvciBlYWNoIG1ham9yIGJ5IHllYXIsIG91ciBjbGllbnQgd2lsbCBhbHNvIGJlIGFibGUgdG8gc2VlIHRoZSBhdmVyYWdlIHNhbGFyaWVzIGVhY2ggbWFqb3IgZWFybnMgYXQgdG9wIGNvbXBhbmllcy4NCg0KKio1LiBEZXNjcmliZSB5b3VyIGludGVuZGVkIHNvbHV0aW9uLiBHaXZlIGEgYnVsbGV0IHBvaW50IGZvciBlYWNoIG1ham9yIGVsZW1lbnQgb2YgeW91ciBwcm9kdWN0IG9yIHNvbHV0aW9uLioqDQoNCkNyZWF0ZSBhIGRpc3RyaWJ1dGlvbiBmb3IgZWFjaCBzcGVjaWZpYyBtYWpvciB0aGF0IHNob3dzIHNhbGFyeSBkaXN0cmlidXRpb24gcGVyIHllYXINCg0KQ3JlYXRlIGEgYmFyIGNoYXJ0IHRoYXQgY29tcGFyZXMgc2FsYXJpZXMgb2YgZWFjaCBtYWpvciBmb3IgdG9wIGNvbXBhbmllcy4gVGhpcyB3aWxsIGFsbG93IHVzIHRvIHNlZSBpZiBjb21wYW5pZXMgYWx0ZXIgdGhlaXIgc3RhcnRpbmcgc2FsYXJpZXMgZm9yIHN0dWRlbnRzIGJhc2VkIG9uIG1ham9yLg0KDQpDb21wYXJlIHRoZXNlIGdyYXBocyB3aXRoIG5hdGlvbmFsIGF2ZXJhZ2VzIGZyb20gb3RoZXIgc2Nob29scyB0byBzaG93IEZTQidzIHN1Y2Nlc3MgKGlmIEZTQiBwZXJmb3JtcyBiZXR0ZXIgdGhhbiB0aGUgbmF0aW9uYWwgYXZlcmFnZSkNCg0KKio2LiBXaGF0IGFyZSB0aGUgcGFpbmtpbGxlcnMgZnJvbSB5b3VyIHNvbHV0aW9uPyBMaXN0IG91dCB0aG9zZSB0aGluZ3MgaW4geW91ciBzb2x1dGlvbiB0aGF0IGNhbiBraWxsIHRoZSBwYWluIHBvaW50cyBvZiB5b3VyIGNsaWVudC4qKg0KDQpPYnRhaW5pbmcgdGhlIGRpc3RyaWJ1dGlvbnMgZm9yIGVhY2ggbWFqb3IncyBzYWxhcmllcyBvdmVyIHRoZSBwYXN0IHllYXJzDQoNClJhdyBkYXRhIHdpbGwgYmUgY2xlYW5lZA0KDQpWaXN1YWwgdGhhdCBjb21wYXJlcyB0aGUgZGlzdHJpYnV0aW9uIG9mIGVhY2ggbWFqb3IgYnkgeWVhcg0KDQoqKjcuIFdoYXQgYXJlIHRoZSBnYWluIGNyZWF0b3JzPyBMaXN0IG91dCB0aGUgaXRlbXMgdGhhdCB3aWxsIGFkZCBhZGRpdGlvbmFsIHZhbHVlIHRvIHlvdXIgY3VzdG9tZXIsIGFib3ZlIGFuZCBiZXlvbmQgYWRkcmVzc2luZyB0aGVpciBjdXJyZW50IHBhaW4gcG9pbnRzLioqDQoNCk91ciBjb2RlIGFuZCBncmFwaHMgcHJvdmlkZWQgY2FuIGJlIGFkanVzdGVkIGFuZCBhZGRlZCB0byBhcyBGU0IgZ2V0cyBtb3JlIGRhdGEuIFRoaXMgd2lsbCBhbGxvdyB0aGVtIHRvIGdldCBhdmVyYWdlIHNhbGFyaWVzIGFuZCBwbGFjZW1lbnRzIGZvciBlYWNoIHllYXINCg0KVGhlIG9yaWdpbmFsIGRhdGEgc2V0IHdpbGwgYmUgY2xlYW5lZCBmb3Igb3RoZXIgZGF0YSBhbmFseXNpcyBwcm9qZWN0cy4gRnV0dXJlIHdvcmtlcnMgY2FuIHVzZSB0aGlzIGRhdGEgc2V0IHRvIHNhdmUgdGltZSBhbmQgcnVuIGFuZCBjcmVhdGUgZGlmZmVyZW50IGFuYWx5c2lzLg0KDQojIERhdGEgSW50b2R1Y3Rpb24NCg0KIyMgSW1wb3J0aW5nIERhdGENCg0KYGBge3J9DQpkYXRhID0gcmVhZFJEUyhmaWxlID0gIkZTQl9CSV9TdXJ2ZXlfMjAxOV8yMDIxLnJkcyIpDQpgYGANCg0KIyMgRGF0YSBEaWN0aW9uYXJ5DQoNClRoZSBkYXRhc2V0IGNvbnRhaW5zIHRocmVlIHllYXJzIG9mIGRhdGEgcmVwcmVzZW50aW5nIEZTQiBncmFkdWF0ZXMsIGluY2x1ZGluZyBncmFkdWF0ZXMgaW4gMjAxOSwgMjAyMCwgYW5kIDIwMjEuIFRoZSBkYXRhc2V0IGhhcyA0MiB2YXJpYWJsZXMuIFRoZSBzb3VyY2UgaXMgZWl0aGVyIGRlcml2ZWQgZHVyaW5nIGRhdGEgY2xlYW5pbmcvbWVyZ2luZywgZnJvbSB0aGUgT3JhY2xlIEJ1c2luZXNzIEludGVsbGlnZW5jZSBFbnRlcnByaXNlIEVkaXRpb24gKE9CSUVFKSBtYWludGFpbmVkIGJ5IE1pYW1pIGFkbWluc2l0cmF0aW9uLCBvciBmcm9tIHRoZSBzZWxmIHJlcG9ydGVkIHNlbmlvciBzdXJ2ZXkuIFRoZSB2YXJpYWJsZXMgYW5kIHRoZWlyIGRlZmluaXRpb25zIGFyZSBsaXN0ZWQgYmVsb3cuDQoNCioqbm1ham9yKio6IG51bWVyaWMsZGVyaXZlZCwgdGhlIG51bWJlciBvZiBtYWpvcnMNCg0KKiptYWpvcjEqKjogdGV4dCwgT0JJRUUsIGZpcnN0IG1ham9yDQoNCioqbWFqb3IgMioqOiB0ZXh0LCBPQklFRSwgc2Vjb25kIG1ham9yDQoNCioqQkJSSioqOiBiaW5hcnksIE9CSUVFLCBhbiBhdHRyaWJ1dGUgb2YgYSBzdHVkZW50LCBidXQgd2UgZG8gbm90IGtub3cgd2hhdCB0aGlzIHN0YW5kcyBmb3INCg0KKipCdXNpbmVzcyBEaXJlY3QgQWRtaXQqKjogYmluYXJ5LCBPQklFRSwgYSBkaXJlY3QgYWRtaXQgdG8gRlNCIGFzIGEgZmlyc3QgeWVhcg0KDQoqKkNvbWJpbmVkIENhY2MgYW5kIE1hc3RlcnMqKjogYmluYXJ5LCBPQklFRSwgY29tYmluZWQgZGVncmVlIHN0dWRlbnQNCg0KKipEZWFuJ3MgTGlzdCoqOiBiaW5hcnksIE9CSUVFLCBhY2hpZXZlIGRlYW4ncyBsaXN0IHN0YXR1cyBhdCBsZWFzdCBvbmNlDQoNCioqRmlyc3QgR2VuZXJhdGlvbiBDb2xsZWdlIFN0ZG50Kio6IGJpbmFyeSwgT0JJRUUsIGZpcnN0IGdlbmVyYXRpb24gc3R1ZGVudCBzdGF0dXMNCg0KKipGU0IgU2Nob2xhcnMqKjogYmluYXJ5LCBPQklFRSwgRlNCIHNjaG9sYXJzIHByb2dyYW0NCg0KKipIb25vcnMgUHJvZ3JhbSoqOiBiaW5hcnksIE9CSUVFLCBtZW1iZXIgb2YgVW5pdmVyc2l0eSBob25vcnMgcHJvZ3JhbQ0KDQoqKlByZXNpZGVudCdzIGxpc3QqKjogYmluYXJ5LCBPQklFRSwgYWNoaWV2ZWQgcHJlc2lkZW50J3MgbGlzdCBhdCBsZWFzdCBvbmNlDQoNCioqU3R1ZHkgQWJyb3VkIENvdXJ0ZXN5IEFjY291bnQqKjogYmluYXJ5LCBPQklFRSwgZG8gbm90IGtub3cgbWVhbmluZw0KDQoqKlRyYW5zZmVyIFdvcmsqKjogYmluYXJ5LCBPQklFRSwgZG8gbm90IGtub3cgZXhhY3QgbWVhbmluZw0KDQoqKkN1bSBMYXVkZSoqOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgQ3VtIExhdWRlDQoNCioqTWFnbmEgQ3VtIExhdWRlKio6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCBNYWduYSBDdW0gTGF1ZGUNCg0KKipTdW1tYSBDdW0gTGF1ZGUqKjogYmluYXJ5LCBPQklFRSwgZ3JhZHVhdGVkIFN1bW1hIEN1bSBMYXVkZQ0KDQoqKlVuaXZlcnNpdHkgSG9ub3JzKio6IGJpbmFyeSwgT0JJRUUsIGdyYWR1YXRlZCB3aXRoIFVuaXZlcnNpdHkgSG9ub3JzDQoNCioqVW5pdmVyc2l0eSBIb25vcnMgdy9EaXN0aW5jdGlvbioqOiBiaW5hcnksIE9CSUVFLCBncmFkdWF0ZWQgd2l0aCBVbml2ZXJzaXR5IEhvbm9ycyB3aXRoIERpc3RpbmN0aW9uDQoNCioqbWlub3IxKio6IHRleHQsIE9CSUVFLCBmaXJzdCBsaXN0ZWQgbWlub3INCg0KKiptaW5vcjIqKjogdGV4dCwgT0JJRUUsIHNlY29uZCBsaXN0ZWQgbWlub3INCg0KKipJUEVEUy5SYWNlLkV0aG5pY2l0eSoqOiB0ZXh0LCBPQklFRSwgcmFjZS9ldGhuaWNpdHkNCg0KKipHZW5kZXIqKjogdGV4dCwgT0JJRUUsIHNleA0KDQoqKkdQQS5SYW5nZSoqOiB0ZXh0LCBPQklFRSwgR1BBIHdpdGhpbiBhIC41IHJhbmdlDQoNCioqVGVybS5Db2RlKio6IG51bWJlcmljLCBPQklFRSwgRmlyc3QgZm91ciBkaWdpdHMgYXJlIHRoZSBwaHlzY2FsIHllYXIgKGJlZ2lubmluZyBpbiBKdWx5LCBlLmcuIEp1bHkgMjAyMCBpcyBGWSAyMDIxKS4gTGFzdCB0d28gZGlnaXRzIGlzIHRoZSB0ZXJtICgxMD1mYWxsLCAxNT13aW50ZXIsIDIwPXNwcmluZywgMzA9c3VtbWVyKQ0KDQoqKlllYXIueCoqOiB0ZXh0LCBkZXJpdmVkLCBmaXJzdCBmb3VyIGRpZ2l0cyBvZiBUZXJtLkNvZGUgc3RvcmVkIGFzIGEgY2hhcmFjdGVyIHZhcmlhYmxlDQoNCioqbGF0aW5faG9ub3JzKio6IHRleHQsIHN1cnZleSwgbGF0aW4gaG9ub3JzIGRlc2lnbmF0aW9uDQoNCioqc3VydmV5X2NpdHkqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGNpdHkgaW4gd2hpY2ggdGhlaXIgam9iIGlzIGxvY2F0ZWQNCg0KKipzdXJ2ZXlfY29tcGFueSoqOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgY29tcGFueSBpbiB3aGljaCB0aGV5IGFjY2VwdGVkIGEgam9iDQoNCioqc3VydmV5X2RlcHRmdW5jKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBqb2IgZnVuY3Rpb24NCg0KKipzdXJ2ZXlfZ3JhZHByb2dyYW0qKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGdyYWR1YXRlIHByb2dyYW0gdGhleSB3aWxsIGJlIGF0dGVuZGluZw0KDQoqKnN1cnZleV9ncmFkc2Nob29sKio6IHRleHQsIHN1cnZleSwgc3R1ZW50IHJlcG9ydGVkIGdyYWR1YXRlIHNjaG9vbCB0aGV5IHdpbGwgYmUgYXR0ZW5kaW5nDQoNCioqc3VydmV5X2ludGVybmZvdXIqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIGZvdXJ0aCBpbnRlcm5zaGlwIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKnN1cnZleV9pbnRlcm50aHJlZSoqOiB0ZXh0LCBzdXJ2ZXksIHN0dWRlbnQgcmVwb3J0ZWQgdGhpcmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCg0KKipzdXJ2ZXlfaW50ZXJudHdvKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzZWNvbmQgaW50ZXJuc2hpcCB0aGV5IGhlbGQgZHVyaW5nIGNvbGxlZ2UNCg0KKipzdXJ2ZXlfaW50ZXJub25lKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBmaXJzdCBpbnRlcm5zaGlwIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKlN1cnZleV9pbnRlcm5zaGlwcyoqOiB0ZXh0LCBzdXJ2ZXksIFN0dWRlbnQgcmVwb3J0ZWQgbnVtYmVyIG9mIGludGVybnNoaXBzIHRoZXkgaGVsZCBkdXJpbmcgY29sbGVnZQ0KDQoqKnN1cnZleV9vZmZlcnMqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIG51bWJlciBvZiBvZmZlcnMgZm9yIGZ1bGwgdGltZSBlbXBsb3ltZW50IHJlY2VpdmVkDQoNCioqc3VydmV5X3BsYW5zKio6IHRleHQsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBwbGFucyBhZnRlciBncmFkdWF0aW9uDQoNCioqc3VydmV5X3ByZWZfZmllbGQqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgZmllbGQNCg0KKipzdXJ2ZXlfcHJlZl9sb2MqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHdoZXRoZXIgd29ya2luZyBpbiBwcmVmZXJyZWQgbG9jYXRpb24NCg0KKipzdXJ2ZXlfc2FsYXJ5Kio6IG51bWVyaWMsIHN1cnZleSwgc3R1ZGVudCByZXBvcnRlZCBzYWxhcnkNCg0KKipzdXJ2ZXlfc3RhdGUqKjogdGV4dCwgc3VydmV5LCBzdHVkZW50IHJlcG9ydGVkIHN0YXRlIGluIHdoaWNoIGpvYiBpcyBsb2NhdGVkDQoNCiMjIERhdGEgUHJvZmlsZQ0KDQpgYGB7cn0NCnNraW0oZGF0YSkNCmBgYA0KDQoNCiMgU2VsZWN0aW9uIG9mIFJlbGV2YW50IFZhcmlhYmxlcw0KDQpCYXNlZCBvbiBvdXIgQlZQLCBub3QgYWxsIHZhcmlhYmxlcyB3aXRoaW4gdGhlIGRhdGEgd2lsbCBiZSB1c2VkLiBUaGUgZm9sbG93aW5nIHZhcmlhYmxlcyB3ZSBwbGFuIG9uIHVzaW5nIHRvIGV2YWx1YXRlIHNhbGFyeSBtYWpvciBhcmU6ICoqbWFqb3IxLCBzdXJ2ZXlfcGxhbnMsIEdlbmRlciwgSVBFRFMuUmFjZS5FdGhuaWNpdHksIFllYXIueCwgc3VydmV5X2NvbXBhbnkqKiBhbmQgKipzdXJ2ZXlfc2FsYXJ5LioqDQoNCkJlbG93IGlzIG1vcmUgaW5mb3JtYXRpb24gb24gZWFjaCBvZiB0aGVzZSB2YXJpYWJsZXMuIEFsbCB0aGUgdmFyaWFibGUgc2VsZWN0ZWQgZXhjZXB0IGZvciAqKnN1cnZleV9jb21wYW55KiogYW5kICoqc3VydmV5X3NhbGFyeSoqIGhhZCBhIGRyb3AgZG93biBtZW51IHRvIGNob29zZSBmcm9tLCBtZWFuaW5nIHRoZXJlIHdlcmUgbm8gbWlzc2luZyB2YWx1ZXMuIA0KDQojIyBTZWxlY3RlZCBWYXJpYWJsZXMgTGV2ZWxzDQoNCmBgYHtyfQ0KbGV2ZWxzKGRhdGEkbWFqb3IxKQ0KdGFibGUoZGF0YSR5ZWFyLngpDQp0YWJsZShkYXRhJHN1cnZleV9wbGFucykNCnRhYmxlKGRhdGEkR2VuZGVyKQ0KdGFibGUoZGF0YSRJUEVEUy5SYWNlLkV0aG5pY2l0eSkNCmBgYA0KDQojIERhdGUgQ2xlYW5pbmcNCiBUaGUgdmFyaWFibGVzIHRoYXQgcmVxdWlyZWQgY2xlYW5pbmcgd2VyZSAqKnN1cnZleV9jb21wYW55KiosICoqc3VydmV5X3BsYW5zKiosIGFuZCAqKnN1cnZleV9zYWxhcnkqKi4NCiANCiMjIHN1cnZleV9jb21wYW55DQoNCkZvciAqKnN1cnZleV9jb21wYW55KiosIHdlIHdhbnRlZCB0byBmaW5kIHRoZSBjb21wYW5pZXMgdGhhdCBoaXJlIHRoZSBtb3N0IHN0dWRlbnRzIGZyb20gRmFybWVyLiBUbyBzdGFydCwgd2UgY2FwaXRhbGl6ZWQgYWxsIGxldHRlcnMgc28gd2UgZGlkIG5vdCBoYXZlIHRvIHdvcnJ5IGFib3V0IGNhc2Ugc2Vuc2l0aXZpdHkgd2hpbGUgc2VhcmNoaW5nIGZvciBmcmVxdWVuY2llcy4gV2Ugd2FudGVkIHRvIGZpbmQgdGhlIGNvbXBhbmllcyB3aXRoIHRoZSBoaWdoZXN0IGZyZXF1ZW5jaWVzIGluIG9yZGVyIHRvIGNvbXBhcmUgdGhlIHNhbGFyaWVzIG9mIGVhY2ggbWFqb3Igd2l0aGluIHNhaWQgY29tcGFuaWVzLg0KDQpgYGB7cn0NCmRhdGEkc3VydmV5X2NvbXBhbnkgPSB0b3VwcGVyKGRhdGEkc3VydmV5X2NvbXBhbnkpDQoNCnRvcDIwY29tcGFuaWVzID0gYXMuZGF0YS5mcmFtZSh0YWJsZShkYXRhJHN1cnZleV9jb21wYW55KSkNCnRvcDIwc29ydGVkID0gdG9wMjBjb21wYW5pZXNbb3JkZXIoLXRvcDIwY29tcGFuaWVzJEZyZXEpLCBdDQpoZWFkKHRvcDIwc29ydGVkLCAyMCkNCmBgYA0KDQpXZSB0aGVuIGNsZWFuZWQgdGhlIHRvcCBjb21wYW5pZXMgdG8gZW5zdXJlIGFsbCByZXNwb25zZXMgd2VyZSBjb3VudGVkIGZvci4gV2UgY3JlYXRlZCBuZXcgZGF0YSBmcmFtZXMgZm9yIHRoZSB0b3AgY29tcGFuaWVzIHN0YXJ0aW5nIHdpdGggdGhlaXIgZmlyc3QgbGV0dGVyIHRvIG1ha2UgdGhlIHByb2Nlc3MgcXVpY2tlciBmb3IgZmluZGluZyBpbmNvbnNpc3RlbmNpZXMuDQoNCiMjIyBEZWxvaXR0ZQ0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KZGF0YV9kIDwtIGRhdGFbZ3JlcCgnXkQnLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX2Qkc3VydmV5X2NvbXBhbnkpDQoNCmRlbG9pdHRlX21hcHBpbmcgPSBjKCJERUxPSVRURSBDT05TVUxUSU5HIiA9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICAgICAiREVMT0lUVEUuIiA9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICAgICAiREVMT0lUVEUsIENISU5BIiA9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICAgICAiREVMT0lUVEUgTExQIiA9ICJERUxPSVRURSIsDQogICAgICAgICAgICAgICAgICAgICAiREVMT0lUVEUgVEFYIiA9ICJERUxPSVRURSIpDQpgYGANCg0KIyMjIERITA0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KZGhsX21hcHBpbmcgPSBjKCJESEwgU1VQUExZIENIQUlOIiA9ICJESEwiKQ0KYGBgDQoNCiMjIyBFWQ0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KZGF0YV9lIDwtIGRhdGFbZ3JlcCgnXkUnLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX2Ukc3VydmV5X2NvbXBhbnkpDQoNCg0KZXlfbWFwcGluZyA9IGMoIkVZIiA9ICJFWSIsIA0KICAgICAgICAgICAgICAgICAgIkUmWSIgPSAiRVkiLA0KICAgICAgICAgICAgICAgICAgIkVSTlNUICYgWU9VTkciID0gIkVZIiwNCiAgICAgICAgICAgICAgICAgICJFIEFORCBZIiA9ICJFWSIsDQogICAgICAgICAgICAgICAiRVkgKEVZKSIgPSAiRVkiLA0KICAgICAgICAgICAgICAgIkVSTlNUIEFORCBZT1VORyIgPSAiRVkiKQ0KYGBgDQoNCiMjIyBLUE1HDQoNCmBgYHtyIHJlc3VsdHMgPSAiaGlkZSJ9DQpkYXRhX2sgPC0gZGF0YVtncmVwKCdeSycsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfayRzdXJ2ZXlfY29tcGFueSkNCg0Ka3BtZ19tYXBwaW5nID0gYygiS0xZTlZFTEQgUEVBVCBNQVJXSUNLIEdPRVJERUxFUiIgPSAiS1BNRyIpDQpgYGANCg0KIyMjIFBXQw0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KDQpkYXRhX3AgPC0gZGF0YVtncmVwKCdeUCcsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfcCRzdXJ2ZXlfY29tcGFueSkNCg0KcHdjX21hcHBpbmcgPSBjKCJQUklDRVdBVEVSSE9VU0VDT09QRVJTIiA9ICJQV0MiLCANCiAgICAgICAgICAgICAgICAiUFJJQ0VXQVRFUkhPVVNFQ09PUEVSUyBMTFAiID0gIlBXQyIsIA0KICAgICAgICAgICAgICAgICJQV0MgTExQIiA9ICJQV0MiKQ0KYGBgDQoNCiMjIyBUZXh0cm9uDQoNCmBgYHtyIHJlc3VsdHMgPSAiaGlkZSJ9DQpkYXRhX3QgPC0gZGF0YVtncmVwKCdeVCcsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfdCRzdXJ2ZXlfY29tcGFueSkNCg0KdGV4dHJvbl9tYXBwaW5nID0gYygiVEVYVFJPTiBBVklBVElPTiIgPSAiVEVYVFJPTiIsIA0KICAgICAgICAgICAgICAgICAgICAiVEVYVFJPTiBTUEVDSUFMSVpFRCBWRUhJQ0xFUyIgPSAiVEVYVFJPTiIsDQogICAgICAgICAgICAgICAgICAgICJURVhUUk9OIFNZU1RFTVMiID0gIlRFWFRST04iLA0KICAgICAgICAgICAgICAgICAgICAiVEVYVFJPTiBTWVNURU1TOiBMWUNPTUlORyBFTkdJTkVTIiA9ICJURVhUUk9OIikNCmBgYA0KDQojIyMgQWJlcmNyb21iaWUgJiBGaXRjaA0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KZGF0YV9hIDwtIGRhdGFbZ3JlcCgnXkEnLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX2Ekc3VydmV5X2NvbXBhbnkpDQoNCmFmX21hcHBpbmcgPSBjKCJBQkVSQ1JPTUJJRSIgPSAiQUJFUkNST01CSUUgJiBGSVRDSCIpDQpgYGANCg0KIyMjIEpQIE1vcmdhbg0KDQpgYGB7ciByZXN1bHRzID0gImhpZGUifQ0KZGF0YV9qIDwtIGRhdGFbZ3JlcCgnXkonLCBkYXRhJHN1cnZleV9jb21wYW55KSwgXQ0KDQp0YWJsZShkYXRhX2okc3VydmV5X2NvbXBhbnkpDQoNCmpwbW9yZ2FuX21hcHBpbmcgPSBjKCJKLlAgTU9SR0FOIiA9ICJKUCBNT1JHQU4gQ0hBU0UiLA0KICAgICAgICAgICAgICAgICAgICAgIkouUC4gTU9SR0FOIiA9ICJKUCBNT1JHQU4gQ0hBU0UiLA0KICAgICAgICAgICAgICAgICAgICAgIkouUC4gTU9SR0FOIFUuUy4gUFJJVkFURSBCQU5LIiA9ICJKUCBNT1JHQU4gQ0hBU0UiLA0KICAgICAgICAgICAgICAgICAgICAgIkpQIE1PUkdBTiIgPSAiSlAgTU9SR0FOIENIQVNFIiwNCiAgICAgICAgICAgICAgICAgICAgICJKUE1PUkdBTiBDSEFTRSAmIENPLiIgPSAiSlAgTU9SR0FOIENIQVNFIiwgDQogICAgICAgICAgICAgICAgICAgICAiSlAgTU9SR0FOIEFORCBDSEFTRSIgPSAiSlAgTU9SR0FOIENIQVNFIiwgDQogICAgICAgICAgICAgICAgICAgICAiSlBNT1JHQU4gQ0hBU0UiID0gIkpQIE1PUkdBTiBDSEFTRSIpDQpgYGANCg0KIyMjIFJTTQ0KDQpUaGVyZSB3ZXJlIG5vIG1pc3NwZWxsaW5ncyBvciBpbmNvbnNpc3RlbmNpZXMgZm9yIFJTTS4NCg0KYGBge3IgcmVzdWx0cyA9ICJoaWRlIn0NCmRhdGFfciA8LSBkYXRhW2dyZXAoJ15SJywgZGF0YSRzdXJ2ZXlfY29tcGFueSksIF0NCg0KdGFibGUoZGF0YV9yJHN1cnZleV9jb21wYW55KQ0KYGBgDQoNCiMjIyBDb3lvdGUgTG9naXN0aWNzDQoNCmBgYHtyIHJlc3VsdHMgPSAiaGlkZSJ9DQpkYXRhX2MgPC0gZGF0YVtncmVwKCdeQycsIGRhdGEkc3VydmV5X2NvbXBhbnkpLCBdDQoNCnRhYmxlKGRhdGFfYyRzdXJ2ZXlfY29tcGFueSkNCg0KY295b3RlX21hcHBpbmcgPSBjKCJDT1lPVEVMT0dJU0lUQ1MiID0gIkNPWU9URSBMT0dJU1RJQ1MiLA0KICAgICAgICAgICAgICAgICAgICAiQ09ZT1RFIiA9ICJDT1lPVEUgTE9HSVNUSUNTIikNCmBgYA0KDQojIyMgUmVwbGFjaW5nIEluY29uc2lzdGVuY2llcw0KDQpgYGB7cn0NCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGV5X21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGRlbG9pdHRlX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGtwbWdfbWFwcGluZykNCg0KZGF0YSRzdXJ2ZXlfY29tcGFueSA8LSBzdHJfcmVwbGFjZV9hbGwoZGF0YSRzdXJ2ZXlfY29tcGFueSwgcHdjX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGRobF9tYXBwaW5nKQ0KDQpkYXRhJHN1cnZleV9jb21wYW55IDwtIHN0cl9yZXBsYWNlX2FsbChkYXRhJHN1cnZleV9jb21wYW55LCB0ZXh0cm9uX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGFmX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGpwbW9yZ2FuX21hcHBpbmcpDQoNCmRhdGEkc3VydmV5X2NvbXBhbnkgPC0gc3RyX3JlcGxhY2VfYWxsKGRhdGEkc3VydmV5X2NvbXBhbnksIGNveW90ZV9tYXBwaW5nKQ0KYGBgDQoNCiMjIyBGaW5hbGl6ZWQgQ29tcGFueSBDb3VudA0KYGBge3J9DQp0b3AyMGNvbXBhbmllcyA9IGFzLmRhdGEuZnJhbWUodGFibGUoZGF0YSRzdXJ2ZXlfY29tcGFueSkpDQp0b3AyMHNvcnRlZCA9IHRvcDIwY29tcGFuaWVzW29yZGVyKC10b3AyMGNvbXBhbmllcyRGcmVxKSwgXQ0KaGVhZCh0b3AyMHNvcnRlZCwgMTApDQpgYGANCg0KIyMgc3VydmV5X3NhbGFyeQ0KDQpXZSB0aGVuIGltcHV0ZWQgdGhlIGF2ZXJhZ2Ugc2FsYXJ5IGZvciBlYWNoIG1ham9yIGZvciBhbGwgcmVzcG9uc2VzIHdpdGggYSBtaXNzaW5nIHNhbGFyeSByZXNwb25zZS4NCg0KYGBge3J9DQppbXB1dGVkX2RhdGEgPSBkYXRhICU+JSANCiAgZ3JvdXBfYnkobWFqb3IxKSAlPiUgDQogIGRwbHlyOjptdXRhdGUoc3VydmV5X3NhbGFyeT1pZmVsc2UoaXMubmEoc3VydmV5X3NhbGFyeSksIG1lYW4oc3VydmV5X3NhbGFyeSwgbmEucm0gPSBUUlVFKSwgc3VydmV5X3NhbGFyeSkpICU+JSANCiAgdW5ncm91cCgpDQpgYGANCg0KIyMgc3VydmV5X3BsYW5zDQoNCldlIG9ubHkga2VwdCBvYnNlcnZhdGlvbnMgZm9yIHN0dWRlbnRzIHdobyBzYWlkIHRoZXkgaGF2ZSBhY2NlcHRlZCBhIGZ1bGwtdGltZSBvciBwYXJ0LXRpbWUgam9iLCBpZ25vcmluZyBvYnNlcnZhdGlvbnMgZm9yIHN0dWRlbnRzIGNvbnRpbnVpbmcgZWR1Y2F0aW9uLCBqb2luaW5nIHRoZSBtaWxpdGFyeSwgZXRjLi4NCg0KYGBge3J9DQpmaWx0ZXJlZF9kYXRhIDwtIGltcHV0ZWRfZGF0YSAlPiUNCiAgZmlsdGVyKHN1cnZleV9wbGFucyAlaW4lIGMoImFjY2VwdGVkIGZ1bGx0aW1lIGpvYiIsICJhY2NlcHRlZCBwYXJ0dGltZSBqb2IiKSkNCmhlYWQoZmlsdGVyZWRfZGF0YSkNCmBgYA0KDQojIENsb3NpbmcgU2Vzc2lvbg0KDQpgYGB7cn0NCnNlc3Npb25JbmZvKCkNCmBgYA0KDQo+ID4gPiA+ID4gPiA+IGFiMDQzNDliZTAwZDA0OWMwMTQ3N2MxMmY4MDk1NWZiNTI3MjRjY2YNCg==</div>
 
 
 </div>
