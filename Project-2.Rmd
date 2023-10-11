@@ -368,11 +368,11 @@ head(top20sorted, 10)
 
 ## survey_salary
 
-We then imputed the average salary for each major for all responses with a missing salary response.
+We then imputed the average salary for each major per year for all responses with a missing salary response.
 
 ```{r}
 imputed_data = data %>% 
-  group_by(major1) %>% 
+  group_by(major1, year.x) %>% 
   dplyr::mutate(survey_salary=ifelse(is.na(survey_salary), mean(survey_salary, na.rm = TRUE), survey_salary)) %>% 
   ungroup()
 ```
