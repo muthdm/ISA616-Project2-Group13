@@ -88,13 +88,16 @@ Our code and graphs provided can be adjusted and added to as FSB gets more data.
 
 The original data set will be cleaned for other data analysis projects. Future workers can use this data set to save time and run and create different analysis.
 
-# Importing Data
+# Data Cleaning
+
+## Importing Data
 
 ```{r}
 data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
 ```
 
-## *Data Dictionary*
+## Data Dictionary
+
 The dataset contains three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The dataset has 42 variables. The source is either derived during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsitration, or from the self reported senior survey. The variables and their definitions are listed below.
 
 **nmajor**: numeric,derived, the number of majors
@@ -181,18 +184,19 @@ The dataset contains three years of data representing FSB graduates, including g
 
 **survey_state**: text, survey, student reported state in which job is located
 
-## Data Analysis
+## Data Profile
 
 ```{r}
 skim(data)
 ```
 
-### Selected Variables
+## Selection of Relevant Variables
 
 Based on our BVP, not all variables within the data will be used. The following variables we plan on using to evaluate salary major are: **major1, major2, survey_plans, Gender, IPEDS.Race.Ethnicity, Year.x,** and **survey_salary.**
 
 Below is more information on each of these variables. Something to note is for **survey_company**, we found the top 20 companies based on the frequency of responses. We will use this companies to analyze whether a company offers similar salaries regardless of majors.
 
+### Selected Variables Levels
 ```{r}
 levels(data$major1)
 levels(data$major2)
@@ -202,9 +206,7 @@ table(data$Gender)
 table(data$IPEDS.Race.Ethnicity)
 ```
 
-## Cleaning Selected Variables
-
-### survey_company
+## Top Companies
 
 We first wanted to find the companies that hire the most students from Farmer. We capitalized all letters so we did not have to worry about case sensitivity while searching for frequencies. We wanted to find the companies with the highest frequencies in order to compare the salaries of each major.
 
@@ -216,15 +218,74 @@ top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 20)
 ```
 
+We then cleaned the top companies to ensure all responses were counted for. We created new data frames for the top companies starting with their first letter to make the process quicker for finding inconsistencies.
+
+### Deloitte
 ```{r}
-name_mapping <- c("EY" = "EY", 
+data_d <- data[grep('^D', data$survey_company), ]
+
+table(data_d$survey_company)
+
+deloitte_mapping = c("DELOITTE CONSULTING" = "DELOITTE",
+                     "DELOITTE." = "DELOITTE",
+                     "DELOITTE, CHINA" = "DELOITTE",
+                     "DELOITTE LLP" = "DELOITTE",
+                     "DELOITTE TAX" = "DELOITTE")
+```
+
+### DHL
+```{r}
+dhl_mapping = c("DHL SUPPLY CHAIN" = "DHL")
+```
+
+### EY
+```{r}
+data_e <- data[grep('^E', data$survey_company), ]
+
+table(data_e$survey_company)
+
+
+ey_mapping = c("EY" = "EY", 
                   "E&Y" = "EY",
                   "ERNST & YOUNG" = "EY",
-                  "E AND Y" = "EY")
+                  "E AND Y" = "EY",
+               "EY (EY)" = "EY",
+               "ERNST AND YOUNG" = "EY")
+```
+
+###KPMG
+```{r}
+data_k <- data[grep('^K', data$survey_company), ]
+
+table(data_k$survey_company)
+
+kpmg_mapping = c("KLYNVELD PEAT MARWICK GOERDELER" = "KPMG")
+```
+
+###PWC
+```{r}
+
+data_p <- data[grep('^P', data$survey_company), ]
+
+table(data_p$survey_company)
+
+pwc_mapping = c("PRICEWATERHOUSECOOPERS" = "PWC", 
+                "PRICEWATERHOUSECOOPERS LLP" = "PWC", 
+                "PWC LLP" = "PWC")
 ```
 
 ```{r}
-data$survey_company <- str_replace_all(data$survey_company, name_mapping)
+data$survey_company <- str_replace_all(data$survey_company, ey_mapping)
+
+data$survey_company <- str_replace_all(data$survey_company, deloitte_mapping)
+
+data$survey_company <- str_replace_all(data$survey_company, kpmg_mapping)
+
+data$survey_company <- str_replace_all(data$survey_company, pwc_mapping)
+
+data$survey_company <- str_replace_all(data$survey_company, dhl_mapping)
+
+#data$survey_company <- str_replace_all(data$survey_company, pwc_mapping)
 ```
 
 ```{r}
@@ -233,11 +294,13 @@ top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 20)
 ```
 
+```{r}
+data
+```
 
-
-
-### Mean Imputation
+## Mean Imputation
 We imputed the average salary for each major for all responses with a missing salary response.
+
 ```{r}
 imputed_data = data %>% 
   group_by(major1) %>% 
@@ -245,21 +308,18 @@ imputed_data = data %>%
   ungroup()
 ```
 
-### Removing Observations
-We only kept observations for students who said they have accepted a fulltime or parttime job ignoring observations for students continuing education as it is not the focus of our analyses.
+## Removing Observations
+
+We only kept observations for students who said they have accepted a full-time or part-time job, ignoring observations for students continuing education, joing the military, etc. as it is not the focus of our analysis.
+
 ```{r}
 filtered_data <- imputed_data %>%
   filter(survey_plans %in% c("accepted fulltime job", "accepted parttime job"))
 head(filtered_data)
 ```
 
+#Closing Session
 
-## *Data Prep*
-```{r}
-library(skimr)
-skim(data)
-```
-The variables 
 ```{r}
 sessionInfo()
 ```
