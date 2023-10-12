@@ -191,6 +191,8 @@ skim(data)
 
 Based on our BVP, not all variables within the data will be used. The following variables we plan on using to evaluate salary major are: **major1, survey_plans, Gender, IPEDS.Race.Ethnicity, Year.x, survey_company** and **survey_salary.**
 
+The variables **Gender** and **IPEDS.RACE.Ethnicity** can be used for further analysis if our client is interested in comparing salries by these variables.
+
 Below is more information on each of these variables. All the variable selected except for **survey_company** and **survey_salary** had a drop down menu to choose from, meaning there were no missing values. 
 
 ## Selected Variables Levels
@@ -365,8 +367,6 @@ data$survey_company <- str_replace_all(data$survey_company, coyote_mapping)
 ### Finalized Company Count
 After fixing inconsistencies among company names, we see the counts for each company increase as well as a new company, DHL, being included in the top ten company counts.
 ```{r}
-top20companies = as.data.frame(table(data$survey_company))
-top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 10)
 ```
 
