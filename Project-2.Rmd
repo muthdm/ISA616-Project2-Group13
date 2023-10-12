@@ -27,6 +27,8 @@ if(require(pacman)==FALSE)
 install.packages("pacman")## Loading package manager: pacman
 pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr, effects, dplyr)
 ```
+# Project Scope
+The scope of this analysis is to generate clean data to be used in analyzing the placement results and salary trends of FSB majors. To generate clean data ready for analysis, we will analyze each variable to assess its relevance in our model, only using/cleaning the variables we will be using. The objective of our model is to graph salary trends for FSB overall as well as different majors in FSB over the last three years. Our audience is Dr. Jones-Farmer, a shared work practitioner who will review the results of our cleaned data and provide recommendations for improving the data cleaning process. 
 
 # Business Value Proposition
 
@@ -339,6 +341,7 @@ coyote_mapping = c("COYOTELOGISITCS" = "COYOTE LOGISTICS",
 
 ### Replacing Inconsistencies
 
+We replaced all instances of the same company being listed under different names to provide consistency among company names.
 ```{r}
 data$survey_company <- str_replace_all(data$survey_company, ey_mapping)
 
@@ -360,6 +363,7 @@ data$survey_company <- str_replace_all(data$survey_company, coyote_mapping)
 ```
 
 ### Finalized Company Count
+After fixing inconsistencies among company names, we see the counts for each company increase as well as a new company, DHL, being included in the top ten company counts.
 ```{r}
 top20companies = as.data.frame(table(data$survey_company))
 top20sorted = top20companies[order(-top20companies$Freq), ]
@@ -368,7 +372,7 @@ head(top20sorted, 10)
 
 ## survey_salary
 
-We then imputed the average salary for each major per year for all responses with a missing salary response.
+We imputed the average salary for each major per year for all responses with a missing salary response.
 
 ```{r}
 imputed_data = data %>% 
@@ -379,7 +383,7 @@ imputed_data = data %>%
 
 ## survey_plans
 
-We only kept observations for students who said they have accepted a full-time or part-time job, ignoring observations for students continuing education, joining the military, etc..
+We created a new data set from the original only keeping observations for students who said they have accepted a full-time or part-time job. We ignored observations for students continuing education, joining the military, etc..
 
 ```{r}
 filtered_data <- imputed_data %>%
@@ -392,5 +396,3 @@ head(filtered_data)
 ```{r}
 sessionInfo()
 ```
-
-> > > > > > > ab04349be00d049c01477c12f80955fb52724ccf
