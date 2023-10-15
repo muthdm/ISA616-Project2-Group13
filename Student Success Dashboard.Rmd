@@ -1,0 +1,92 @@
+---
+title: "Student Success Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+#runtime: shiny
+---
+
+```{r setup, include=FALSE,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warning=FALSE)
+
+#package intialization
+if(require(pacman)==FALSE) install.packages("pacman")
+pacman::p_load(tidyverse, #for data manipulation
+               plotly, #for interactive plots
+               flexdashboard, #to make a dashboard
+               fontawesome, #for icons
+               DT #for better tables
+               )
+
+#read in data
+#data=readRDS("FSB_BI_Survey_2019_2021.rds")
+```
+
+# Overview and Insights {data-orientation=columns}
+
+## Column {data-width=500}
+
+### Project/Problem Overview
+
+### OUr SOlution
+
+## Column {data-width=500}
+
+### Insights and Conclusions
+
+### Links
+
+# Major Salaries by Year {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Salary Distribution per Major by Year (Histograms)
+
+```{r,echo=FALSE}
+
+```
+
+# FSB {data-orientation=columns}
+
+## Column {data-width=400}
+
+### Average Salary of Majors by Year (Line Chart)
+
+```{r,echo=FALSE}
+
+```
+
+### National Average Salary of Majors by Year (Line Chart)
+
+```{r,echo=FALSE}
+
+```
+
+
+## Column {data-width=600}
+
+### Salary Distribution by Year of FSB as a Whole (Histograms)
+
+```{r,echo=FALSE}
+
+```
+
+
+# Salries by Top Companies {data-orientation=columns}
+
+## Column {data-width=500}
+
+### Table of Top 10 Companies (columns include: company, major, salary, and year)
+
+```{r,echo=FALSE}
+
+```
+
+## Column {data-width=500}
+
+### Average Salary of Each Major of the Top 3 Companies (Bar Chart)
+
+```{r}
+
+```
+
