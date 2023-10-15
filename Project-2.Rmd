@@ -94,7 +94,7 @@ data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
 
 ## Data Dictionary
 
-The dataset contains three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The dataset has 42 variables. The source is either derived during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsitration, or from the self reported senior survey. The variables and their definitions are listed below.
+The data set contains three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The data set has 42 variables. The source is either derived during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsistration, or from the self reported senior survey. The variables and their definitions are listed below.
 
 **nmajor**: numeric,derived, the number of majors
 
@@ -220,153 +220,74 @@ top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 20)
 ```
 
-We then cleaned the top companies to ensure all responses were counted for. We created new data frames for the top companies starting with their first letter to make the process quicker for finding inconsistencies.
+We then cleaned the top companies to ensure all responses were counted for. We collapsed the levels of all companies and focused on cleaning the top 10 company names fixing spelling inconsistencies to provide a more accurate count of top companies
+```{r}
+data$survey_company = factor(data$survey_company)
+```
 
 ### Deloitte
-
 ```{r results = "hide"}
-data_d <- data[grep('^D', data$survey_company), ]
-
-table(data_d$survey_company)
-
-deloitte_mapping = c("DELOITTE CONSULTING" = "DELOITTE",
-                     "DELOITTE." = "DELOITTE",
-                     "DELOITTE, CHINA" = "DELOITTE",
-                     "DELOITTE LLP" = "DELOITTE",
-                     "DELOITTE TAX" = "DELOITTE")
+data$survey_company=fct_collapse(data$survey_company, "DELOITTE" = c("DELOITTE CONSULTING", "DELOITTE.", "DELOITTE, CHINA", "DELOITTE LLP", "DELOITTE TAX"))
 ```
 
 ### DHL
 
 ```{r results = "hide"}
-dhl_mapping = c("DHL SUPPLY CHAIN" = "DHL")
+data$survey_company=fct_collapse(data$survey_company, "DHL" = c("DHL SUPPLY CHAIN"))
 ```
 
 ### EY
 
 ```{r results = "hide"}
-data_e <- data[grep('^E', data$survey_company), ]
-
-table(data_e$survey_company)
-
-
-ey_mapping = c("EY" = "EY", 
-                  "E&Y" = "EY",
-                  "ERNST & YOUNG" = "EY",
-                  "E AND Y" = "EY",
-               "EY (EY)" = "EY",
-               "ERNST AND YOUNG" = "EY")
+data$survey_company=fct_collapse(data$survey_company, "EY" = c("E&Y", "ERNST & YOUNG", "E AND Y", "EY (EY)", "ERNST AND YOUNG", "E & Y"))
 ```
 
 ### KPMG
 
 ```{r results = "hide"}
-data_k <- data[grep('^K', data$survey_company), ]
-
-table(data_k$survey_company)
-
-kpmg_mapping = c("KLYNVELD PEAT MARWICK GOERDELER" = "KPMG")
+data$survey_company=fct_collapse(data$survey_company, "KPMG" = c("KLYNVELD PEAT MARWICK GOERDELER"))
 ```
 
 ### PWC
 
 ```{r results = "hide"}
-
-data_p <- data[grep('^P', data$survey_company), ]
-
-table(data_p$survey_company)
-
-pwc_mapping = c("PRICEWATERHOUSECOOPERS" = "PWC", 
-                "PRICEWATERHOUSECOOPERS LLP" = "PWC", 
-                "PWC LLP" = "PWC")
+data$survey_company=fct_collapse(data$survey_company, "PWC" = c("PRICEWATERHOUSECOOPERS", "PRICEWATERHOUSECOOPERS LLP", "PWC LLP"))
 ```
 
 ### Textron
 
 ```{r results = "hide"}
-data_t <- data[grep('^T', data$survey_company), ]
-
-table(data_t$survey_company)
-
-textron_mapping = c("TEXTRON AVIATION" = "TEXTRON", 
-                    "TEXTRON SPECIALIZED VEHICLES" = "TEXTRON",
-                    "TEXTRON SYSTEMS" = "TEXTRON",
-                    "TEXTRON SYSTEMS: LYCOMING ENGINES" = "TEXTRON")
+data$survey_company=fct_collapse(data$survey_company, "TEXTRON" = c("TEXTRON AVIATION", "TEXTRON SPECIALIZED VEHICLES", "TEXTRON SYSTEMS", "TEXTRON SYSTEMS: LYCOMING ENGINES"))
 ```
 
 ### Abercrombie & Fitch
 
 ```{r results = "hide"}
-data_a <- data[grep('^A', data$survey_company), ]
-
-table(data_a$survey_company)
-
-af_mapping = c("ABERCROMBIE" = "ABERCROMBIE & FITCH")
+data$survey_company=fct_collapse(data$survey_company, "ABERCROMBIE & FITCH" = c("ABERCROMBIE"))
 ```
 
 ### JP Morgan
 
 ```{r results = "hide"}
-data_j <- data[grep('^J', data$survey_company), ]
-
-table(data_j$survey_company)
-
-jpmorgan_mapping = c("J.P MORGAN" = "JP MORGAN CHASE",
-                     "J.P. MORGAN" = "JP MORGAN CHASE",
-                     "J.P. MORGAN U.S. PRIVATE BANK" = "JP MORGAN CHASE",
-                     "JP MORGAN" = "JP MORGAN CHASE",
-                     "JPMORGAN CHASE & CO." = "JP MORGAN CHASE", 
-                     "JP MORGAN AND CHASE" = "JP MORGAN CHASE", 
-                     "JPMORGAN CHASE" = "JP MORGAN CHASE")
+data$survey_company=fct_collapse(data$survey_company, "JP MOGAN CHASE" = c("JP MORGAN", "JPMORGAN", "JPMORGAN CHASE", "J.P. MORGAN", "J.P MORGAN", "JPMORGAN CHASE & CO.", "JP MORGAN AND CHASE", ""))
 ```
 
 ### RSM
 
 There were no misspellings or inconsistencies for RSM.
 
-```{r results = "hide"}
-data_r <- data[grep('^R', data$survey_company), ]
-
-table(data_r$survey_company)
-```
 
 ### Coyote Logistics
 
 ```{r results = "hide"}
-data_c <- data[grep('^C', data$survey_company), ]
-
-table(data_c$survey_company)
-
-coyote_mapping = c("COYOTELOGISITCS" = "COYOTE LOGISTICS",
-                    "COYOTE" = "COYOTE LOGISTICS")
-```
-
-### Replacing Inconsistencies
-
-We replaced all instances of the same company being listed under different names to provide consistency among company names.
-```{r}
-data$survey_company <- str_replace_all(data$survey_company, ey_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, deloitte_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, kpmg_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, pwc_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, dhl_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, textron_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, af_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, jpmorgan_mapping)
-
-data$survey_company <- str_replace_all(data$survey_company, coyote_mapping)
+data$survey_company=fct_collapse(data$survey_company, "COYOTE LOGISTICS" = c("COYOTELOGISTICS", "COYOTE"))
 ```
 
 ### Finalized Company Count
 After fixing inconsistencies among company names, we see the counts for each company increase as well as a new company, DHL, being included in the top ten company counts.
 ```{r}
+top20companies = as.data.frame(table(data$survey_company))
+top20sorted = top20companies[order(-top20companies$Freq), ]
 head(top20sorted, 10)
 ```
 
