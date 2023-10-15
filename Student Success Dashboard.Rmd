@@ -28,7 +28,7 @@ pacman::p_load(tidyverse, #for data manipulation
 
 ### Project/Problem Overview
 
-### OUr SOlution
+### Our Solution
 
 ## Column {data-width=500}
 
