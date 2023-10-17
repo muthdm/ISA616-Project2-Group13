@@ -17,9 +17,6 @@ pacman::p_load(tidyverse, #for data manipulation
                fontawesome, #for icons
                DT #for better tables
                )
-
-#read in data
-#data=readRDS("FSB_BI_Survey_2019_2021.rds")
 ```
 
 # Overview and Insights {data-orientation=columns}
@@ -28,7 +25,11 @@ pacman::p_load(tidyverse, #for data manipulation
 
 ### Project/Problem Overview
 
+Show salaries of Farmer students.
+
 ### Our Solution
+
+We will create histograms.
 
 ## Column {data-width=500}
 
