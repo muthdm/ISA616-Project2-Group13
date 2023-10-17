@@ -76,14 +76,32 @@ print(df)
 ```
 
 
-# Salries by Top Companies {data-orientation=columns}
+# Salaries by Top Companies {data-orientation=columns}
 
 ## Column {data-width=500}
 
 ### Table of Top 10 Companies (columns include: company, major, salary, and year)
 
 ```{r,echo=FALSE}
+data = companies %>%
+  #filter(intern_status == "Yes") %>%
+  #filter(pay_status == "Yes") %>%
+  group_by(survey_company, year.x, major1, survey_salary) %>%
+  summarize(count=n()) %>%
+  arrange(survey_company, year.x, major1, survey_salary, -count)
 
+#data$employer = fct_explicit_na(data$employer, "unkown")
+#finding all NAs and putting it into "unknown" category
+
+
+datatable(data, rownames=F, extensions = "Buttons", 
+          options =list(dom = "Bfrtip",
+                        buttons=c("copy", "csv", "excel")
+                        ),
+          filter = list(position = "bottom",
+                        clear=F,plain= T
+                        )
+          )
 ```
 
 ## Column {data-width=500}
