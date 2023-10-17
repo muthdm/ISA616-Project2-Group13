@@ -312,13 +312,6 @@ filtered_data <- imputed_data %>%
 head(filtered_data)
 ```
 
-# Top Companies Data Frame
-This data includes only observations for students that landed a job at one of the top 10 companies
-```{r}
-top_companies_data = filtered_data %>%
-filter(survey_company %in% c("DELOITTE", "PWC", "EY", "KPMG", "TEXTRON", "ABERCROMBIE & FITCH", "DHL", "JP MORGAN CHASE", "RSM", "COYOTE LOGISTICS"))
-```
-
 # Closing Session
 
 ```{r}
