@@ -17,6 +17,9 @@ pacman::p_load(tidyverse, #for data manipulation
                fontawesome, #for icons
                DT #for better tables
                )
+
+df = read_csv("clean_data.csv")
+companies = read_csv("top_companies.csv")
 ```
 
 # Overview and Insights {data-orientation=columns}
@@ -44,7 +47,7 @@ We will create histograms.
 ### Salary Distribution per Major by Year (Histograms)
 
 ```{r,echo=FALSE}
-
+print(df)
 ```
 
 # FSB {data-orientation=columns}
