@@ -1,5 +1,9 @@
 
 .Rproj.user
 FSB_BI_Survey_2019_2021.rds
+clean_data.csv
+top_companies.csv
 git rm --cached FSB_BI_Survey_2019_2021.rds
 git rm --cached .Rproj.user
+git rm --cached clean_data.csv
+git rm --cached top_companies.csv
