@@ -29,7 +29,7 @@ companies = read_csv("top_companies.csv")
 
 ### Project/Problem Overview
 
-Show salaries of Farmer students.
+Show salaries of Farmer students. 
 
 ### Our Solution
 
@@ -242,7 +242,21 @@ plotly_chart
 ### Salary Distribution by Year of FSB as a Whole (Histograms)
 
 ```{r,echo=FALSE}
+# Define the range for the x-axis to ignore extreme outliers
+x_axis_range <- c(0, 100000)  # Used 100,000 to get a more accurate look of the shape of the histogram
 
+# Create a separate histogram for each year
+ggplot(df, aes(x = survey_salary)) +
+  geom_histogram(binwidth = 5000, fill = "blue", color = "black") +
+  facet_wrap(~year.x) +
+  labs(
+    title = "Histogram of FSB Salaries by Year",
+    x = "Salary",
+    y = "Frequency"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  coord_cartesian(xlim = x_axis_range)
 ```
 
 
