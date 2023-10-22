@@ -41,13 +41,15 @@ We will create histograms.
 
 ### Links
 
+Indiana University Salaries: https://kelley.iu.edu/recruiters-companies/undergrad/statistics/salary-statistics/index.html
+
+Ohio State Salaries: https://fisher.osu.edu/careers-recruiting/salary-outcome-data
+
 # Major Salaries by Year {data-orientation=columns}
 
 ## Column {data-width=333}
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 finance_data <- df[df$major1 == "Finance", ]
 
 # Create a separate histogram for each year
@@ -80,8 +82,6 @@ ggplot(analytics_data, aes(x = survey_salary)) +
 ```
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 economics_data <- df[df$major1 == "Business Economics", ]
 
 # Create a separate histogram for each year
@@ -100,8 +100,6 @@ ggplot(economics_data, aes(x = survey_salary)) +
 ## Column {data-width=333}
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 marketing_data <- df[df$major1 == "Marketing", ]
 
 # Create a separate histogram for each year
@@ -118,8 +116,6 @@ ggplot(marketing_data, aes(x = survey_salary)) +
 ```
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 entre_data <- df[df$major1 == "Entrepreneurship", ]
 
 # Create a separate histogram for each year
@@ -154,8 +150,6 @@ ggplot(supply_data, aes(x = survey_salary)) +
 ## Column {data-width=333}
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 accountancy_data <- df[df$major1 == "Accountancy", ]
 
 # Create a separate histogram for each year
@@ -172,8 +166,6 @@ ggplot(accountancy_data, aes(x = survey_salary)) +
 ```
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 mgmt_data <- df[df$major1 == "Management and Leadership", ]
 
 # Create a separate histogram for each year
@@ -190,8 +182,6 @@ ggplot(mgmt_data, aes(x = survey_salary)) +
 ```
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
-# Assuming 'df' is your data frame
-# Filter the data for 'Finance' majors
 information_data <- df[df$major1 == "Information Systems", ]
 
 # Create a separate histogram for each year
@@ -211,7 +201,7 @@ ggplot(information_data, aes(x = survey_salary)) +
 
 ## Column {data-width=400}
 
-### Average Salary of Majors by Year (Line Chart)
+### Farmer's Average Salries by Major by Year
 
 ```{r,echo=FALSE}
 result <- df %>%
@@ -230,19 +220,9 @@ plotly_chart <- result %>%
 plotly_chart
 ```
 
-### National Average Salary of Majors by Year (Line Chart)
+### FSB's Salries as a Whole by Year
 
 ```{r,echo=FALSE}
-
-```
-
-
-## Column {data-width=600}
-
-### Salary Distribution by Year of FSB as a Whole (Histograms)
-
-```{r,echo=FALSE}
-# Define the range for the x-axis to ignore extreme outliers
 x_axis_range <- c(0, 100000)  # Used 100,000 to get a more accurate look of the shape of the histogram
 
 # Create a separate histogram for each year
@@ -260,12 +240,20 @@ ggplot(df, aes(x = survey_salary)) +
 ```
 
 
+## Column {data-width=600}
+
+### Comparable School's Average Salaries
+
+```{r,echo=FALSE}
+
+```
+
+
 # Salaries by Top Companies {data-orientation=columns}
 
 ## Column {data-width=500}
 
-### Table of Top 10 Companies (columns include: company, major, salary, and year)
-
+### Top 10 Companies
 ```{r,echo=FALSE}
 data = companies %>%
   #filter(intern_status == "Yes") %>%
@@ -288,11 +276,59 @@ datatable(data, rownames=F, extensions = "Buttons",
           )
 ```
 
-## Column {data-width=500}
+### Deloitte Average Salaries
 
-### Average Salary of Each Major of the Top 3 Companies (Bar Chart)
+```{r, echo =FALSE, fig.width = 8, fig.height=6}
+#Deloitte Bar Chart
 
-```{r}
+filtered_data <- companies %>%
+  filter(survey_company == "DELOITTE") %>%
+  group_by(major1, survey_company) %>%
+  summarise(average_salary = mean(survey_salary))
+
+# Create a responsive plotly bar chart for "DELOITTE"
+plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
+  layout(xaxis = list(title = "Major"),
+         yaxis = list(title = "Average Salary"),
+         barmode = "group")
 
 ```
+
+## Column {data-width=500}
+
+### EY Average Salaries
+
+```{r, echo = FALSE, fig.width = 4, fig.height=2.5}
+#EY
+
+filtered_data <- companies %>%
+  filter(survey_company == "EY") %>%
+  group_by(major1, survey_company) %>%
+  summarise(average_salary = mean(survey_salary))
+
+# Create a responsive plotly bar chart for "EY"
+plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
+  layout(xaxis = list(title = "Major"),
+         yaxis = list(title = "Average Salary"),
+         barmode = "group")
+```
+
+### Textron Average Salries
+
+```{r, echo = FALSE, fig.width = 4, fig.height=2.5}
+#Textron Bar Chart
+
+filtered_data <- companies %>%
+  filter(survey_company == "TEXTRON") %>%
+  group_by(major1, survey_company) %>%
+  summarise(average_salary = mean(survey_salary))
+
+# Create a responsive plotly bar chart for "TEXTRON"
+plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
+  layout(xaxis = list(title = "Major"),
+         yaxis = list(title = "Average Salary"),
+         barmode = "group")
+
+```
+
 

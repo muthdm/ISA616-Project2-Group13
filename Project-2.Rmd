@@ -314,7 +314,7 @@ head(filtered_data)
 
 # Top Companies Data Frame
 
-This data includes only observations for students that landed a job at one of the top 10 companies
+This data includes only observations for students that landed a job at one of the top 10 companies (based on total hires).
 
 ```{r}
 top_companies_data = filtered_data %>%
