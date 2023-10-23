@@ -33,7 +33,7 @@ Kirk Bogard and the team at the Office of the Dean & External Relations is respo
 
 ### Our Solution
 
-To allievate some of the difficulties Kirk faced as well as provide Kirk with ready-to-use data and visualizations, we devised comprehensive solution:
+To alleviate some of the difficulties Kirk faced as well as provide Kirk with ready-to-use data and visualizations, we devised comprehensive solution:
 
 Data Cleaning: We started with the data cleaning processes to transform the raw data into a usable format. This ensured that only relevant variables were considered, paving the way for accurate analysis.
 
@@ -49,11 +49,13 @@ Our approach leaned heavily on data visualization:
 
 ### Insights and Conclusions
 
-1. Information Systems and Business Analytics majors tend to make the highest salaries, with Finance and Economics trailing slightly behind. Marketing to a big dip in 2021 to be the lowest paying major. 
+1. Information Systems and Business Analytics majors tend to make the highest salaries, with Finance and Economics trailing slightly behind. The average salary for Management and Leadership majors took a big dip in 2021 to be the lowest paying major, going from just over 58,000 dollars in 2020 to under 51,000 dollars in 2021.
 
 2. When comparing Farmer with Kelley School of Business and Fisher School of Business, we see that Kelley outperforms the other schools for all majors. Farmer and Fisher go back and forth for majors but are roughly the same.
 
-3. For top companies, Information Systems majors tend to make the highest average starting salaries. 
+3. For the majority of majors, both median and average salaries have risen from the time frame of 2019 to 2021.
+
+4. For top companies, Information Systems majors tend to make the highest average starting salaries. 
 
 ### Links
 
