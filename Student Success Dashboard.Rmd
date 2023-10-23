@@ -29,21 +29,31 @@ companies = read_csv("top_companies.csv")
 
 ### Project/Problem Overview
 
-Show salaries of Farmer students. 
+Kirk Bogard and the team at the Office of the Dean & External Relations is responsible for building relationships and securing funding for the FSB program. Some pain points for Kirk and his team include the presence of unstructured data, which necessitated extensive cleaning before meaningful analysis could commence. Additionally, there was a clear lack of understanding regarding the changing trends in student placement and salary over time. This gap in knowledge posed significant hurdles, especially when trying to discern the performance of FSB starting salaries across different majors.
 
 ### Our Solution
 
-We will create histograms.
+To allievate some of the difficulties Kirk faced as well as provide Kirk with ready-to-use data and visualizations, we devised comprehensive solution:
+
+Data Cleaning: We started with the data cleaning processes to transform the raw data into a usable format. This ensured that only relevant variables were considered, paving the way for accurate analysis.
+
+Our approach leaned heavily on data visualization:
+
+*We created histograms that detail the salary distribution for each specific major on a yearly basis, providing a clear view of evolving trends.
+
+*Bar charts were formulated to compare the starting salaries offered by top companies to FSB majors, shedding light on industry preferences and biases.
+
+*Comparative Analysis: To offer a broader perspective, we juxtaposed FSB's data with average starting salaries from Fisher School of Business and Kelley School of Business. This allowed us to benchmark FSB's performance across various majors in comparison to other top business schools in the area. 
 
 ## Column {data-width=500}
 
 ### Insights and Conclusions
 
-1. Information Systems and Business Analytics majors tend to make the highest salaries, with Finance and Economics trailing slightly behind. Marketing to a big dip in 2021 to be the lowest payng major. 
+1. Information Systems and Business Analytics majors tend to make the highest salaries, with Finance and Economics trailing slightly behind. Marketing to a big dip in 2021 to be the lowest paying major. 
 
 2. When comparing Farmer with Kelley School of Business and Fisher School of Business, we see that Kelley outperforms the other schools for all majors. Farmer and Fisher go back and forth for majors but are roughly the same.
 
-3. For top companies, Information Systems tend to make the highest average salaries. 
+3. For top companies, Information Systems majors tend to make the highest average starting salaries. 
 
 ### Links
 
@@ -61,23 +71,21 @@ https://www.officialdata.org/us/inflation/2022?endYear=2021&amount=60000
 ###
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
+# Finance Major
 finance_data <- df[df$major1 == "Finance", ]
-
-# Create a separate histogram for each year
 plot <- ggplot(finance_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Finance Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(limits = c(0, 100000)) +  # Set the x-axis range up to 100,000
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -86,21 +94,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 analytics_data <- df[df$major1 == "Business Analytics", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(analytics_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Business Analytics Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -108,22 +114,19 @@ interactive_plot
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 economics_data <- df[df$major1 == "Business Economics", ]
-
-# Create a separate histogram for each year
 plot <- ggplot(economics_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Economics Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -133,22 +136,19 @@ interactive_plot
 
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 marketing_data <- df[df$major1 == "Marketing", ]
-
-# Create a separate histogram for each year
 plot <- ggplot(marketing_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Marketing Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -157,21 +157,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 entre_data <- df[df$major1 == "Entrepreneurship", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(entre_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
-    title = "Histogram of Entreprenuership Major Salaries",
+    title = "Histogram of Entrepreneurship Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -180,21 +178,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 supply_data <- df[df$major1 == "Supply Chain & Operations Mgmt", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(supply_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Supply Chain Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -205,21 +201,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 accountancy_data <- df[df$major1 == "Accountancy", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(accountancy_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Accountancy Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -228,21 +222,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 mgmt_data <- df[df$major1 == "Management and Leadership", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(mgmt_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Management and Leadership Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -251,21 +243,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 information_data <- df[df$major1 == "Information Systems", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(information_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Information Systems Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 
@@ -274,21 +264,19 @@ interactive_plot
 ```{r, fig.width = 4, fig.height=2.5, echo=FALSE}
 human_data <- df[df$major1 == "Human Capital Mgmt& Leadership", ]
 
-# Create a separate histogram for each year
 plot <- ggplot(human_data, aes(x = survey_salary)) +
-  geom_histogram(binwidth = 1000, fill = "blue", color = "black") +
-  facet_wrap(~year.x, scales = "free_x") +
+  geom_histogram(binwidth = 1000, fill = "blue", color = "blue") +
+  facet_wrap(~year.x, scales = "fixed") +
   labs(
     title = "Histogram of Human Capital Management Major Salaries",
     x = "Salary",
     y = "Frequency"
   ) +
-  scale_x_continuous(labels = scales::number_format(scale = 1)) + 
+  scale_x_continuous(labels = scales::number_format(scale = 1)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
 interactive_plot <- ggplotly(plot)
-
 interactive_plot
 ```
 # FSB {data-orientation=columns}
@@ -321,7 +309,7 @@ x_axis_range <- c(0, 100000)  # Used 100,000 to get a more accurate look of the 
 
 interactive_plot <- plot_ly(df, x = ~survey_salary, type = "histogram", 
                             xbins = list(start = x_axis_range[1], end = x_axis_range[2], size = 5000),
-                            marker = list(color = "blue", line = list(color = "black")), autobinx = FALSE) %>%
+                            marker = list(color = "blue", line = list(color = "black", width = 1)), autobinx = FALSE) %>%
   layout(
     title = "Histogram of FSB Salaries by Year",
     xaxis = list(title = "Salary"),
@@ -396,7 +384,7 @@ filtered_data <- companies %>%
 # Create a responsive plotly bar chart for "DELOITTE"
 plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
   layout(xaxis = list(title = "Major"),
-         yaxis = list(title = "Average Salary"),
+         yaxis = list(title = "Average Salary", range = c(0, 80000)),
          barmode = "group")
 
 ```
@@ -416,7 +404,7 @@ filtered_data <- companies %>%
 # Create a responsive plotly bar chart for "EY"
 plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
   layout(xaxis = list(title = "Major"),
-         yaxis = list(title = "Average Salary"),
+         yaxis = list(title = "Average Salary", range = c(0, 80000)),
          barmode = "group")
 ```
 
@@ -433,7 +421,7 @@ filtered_data <- companies %>%
 # Create a responsive plotly bar chart for "TEXTRON"
 plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = list(color = "blue")) %>%
   layout(xaxis = list(title = "Major"),
-         yaxis = list(title = "Average Salary"),
+         yaxis = list(title = "Average Salary", range = c(0, 80000)),
          barmode = "group")
 
 ```
