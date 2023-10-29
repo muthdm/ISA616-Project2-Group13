@@ -8,18 +8,22 @@ The Farmer School of Business conducts annual surveys to learn about student's j
 * Overlay a graph of the previous year's average salary per year, per major of Farmer graduates
 * Compare these graphs with averages from other schools to show FSB’s success (if FSB performs better than the national average)
 
-This will help Kirk Bogard by:
+This will help by:
 
 * Understanding of data that has been collected over the last 3 years in a structured way
 * Having the average salary of each FSB major for past years
 * Understanding of which majors tend to have higher salaries within the same company
 
 ## File Overview
-1) Project-2.RMD: R-Markdown file that contains our data processing in order to generate clean data for analyses 
-2) Project-2.HTML: HTML file that displays our data processing in an easy to understand layout
-3) Student Success Dashboard.RMD: R-Markdown file that contains the code for generating our dashboard
-4) Student Success Dashboard.HTML: HTML file that displays our dashboard, the final deliverable, showing salary distribution by major in FSB over the previous 3 years, salary distribution of FSB as a whole, FSB major salaries compared to Kelley Business School and the Fisher School of Business majors, and the salary distribution for different majors within the same company.
-5) Copy of poster Value poposition canvas simple white.png: Our business value proposition in an image format
+1) Project-2.RMD: R-Markdown file that contains our data processing in order to generate clean data for analyses. It is the first file that needs to be run in this workflow.
+
+2) Project-2.HTML: HTML file that displays our data processing in an easy to understand layout detailing which variables were kept/removed as well as how we cleaned the variables we kept. 
+
+3) Student Success Dashboard.RMD: R-Markdown file that contains the code for generating our dashboard.
+
+4) Student Success Dashboard.HTML: HTML file that displays our dashboard, the final deliverable, showing salary distribution by major in FSB over the previous 3 years, salary distribution of FSB as a whole, FSB major salaries compared to Kelley Business School and the Fisher School of Business majors, and the salary distribution for different majors within the same company. This is the main deliverable file and most important for gaining insights. The graphs are all intereactive with different options to zoom in, scroll within the graph, and even download the graphs as png. The data table in the Salaries by Top Company tab is for the top ten companies and can be filtered for different years, majors, salaries, and companies in the top ten companies in terms of hiring recent Miami graduates. The filtered dataset can be downloaded as a csv or excel file.
+
+5) Copy of poster Value proposition canvas simple white.png: Our business value proposition in an image format that is included in the Project-2.RMD and HTML file.
 
 ## Main Data Source
 
