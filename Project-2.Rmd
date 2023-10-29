@@ -27,14 +27,16 @@ if(require(pacman)==FALSE)
 install.packages("pacman")## Loading package manager: pacman
 pacman::p_load(readxl, gptstudio, httr, tidyverse, corrplot, DataExplorer,skimr, effects, dplyr)
 ```
+
 # Project Scope
-The scope of this analysis is to generate clean data to be used in analyzing the placement results and salary trends of FSB majors. To generate clean data ready for analysis, we will analyze each variable to assess its relevance in our model, only using/cleaning the variables we will be using. The objective of our model is to graph salary trends for FSB overall as well as different majors in FSB over the last three years. Our audience is Dr. Jones-Farmer, a shared work practitioner who will review the results of our cleaned data and provide recommendations for improving the data cleaning process. 
+
+The scope of this analysis is to generate clean data to be used in analyzing the placement results and salary trends of FSB majors. To generate clean data ready for analysis, we will analyze each variable to assess its relevance in our model, only using/cleaning the variables we will be using. The objective of our model is to graph salary trends for FSB overall as well as different majors in FSB over the last three years. Our audience is Dr. Jones-Farmer, a shared work practitioner who will review the results of our cleaned data and provide recommendations for improving the data cleaning process.
 
 # Business Value Proposition
 
 ## Visual
 
-![](images/Copy of poster Value proposition canvas simple white (2).png)
+![](images/Copy of poster Value proposition canvas simple white (3).png)
 
 ## Written
 
@@ -54,7 +56,7 @@ Unstructured data requiring lots of data cleaning before any analysis can begin
 
 Lack of understanding trend changes of student placement and salary over time
 
-Lack of understanding which FSB majors are performing above/below the national average for salary
+Lack of understanding which FSB majors are performing above/below comparable schools
 
 **4. Add gains. What are the gains that your customer expects to get or will be surprised to benefit from your solution?**
 
@@ -68,7 +70,7 @@ Create a distribution for each specific major that shows salary distribution per
 
 Create a bar chart that compares salaries of each major for top companies. This will allow us to see if companies alter their starting salaries for students based on major.
 
-Compare these graphs with national averages from other schools to show FSB's success (if FSB performs better than the national average)
+Compare these graphs with averages from other schools to show FSB's success (if FSB performs better than other business schools' average)
 
 **6. What are the painkillers from your solution? List out those things in your solution that can kill the pain points of your client.**
 
@@ -84,7 +86,7 @@ Our code and graphs provided can be adjusted and added to as FSB gets more data.
 
 The original data set will be cleaned for other data analysis projects. Future workers can use this data set to save time and run and create different analysis.
 
-# Data Intoduction
+# Data Introduction
 
 ## Importing Data
 
@@ -94,7 +96,7 @@ data = readRDS(file = "FSB_BI_Survey_2019_2021.rds")
 
 ## Data Dictionary
 
-The data set contains three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The data set has 42 variables. The source is either derived during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsistration, or from the self reported senior survey. The variables and their definitions are listed below.
+The data set contains three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The data set has 42 variables. The source is either derived during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami administration, or from the self reported senior survey. The variables and their definitions are listed below.
 
 **nmajor**: numeric,derived, the number of majors
 
@@ -186,14 +188,13 @@ The data set contains three years of data representing FSB graduates, including 
 skim(data)
 ```
 
-
 # Selection of Relevant Variables
 
 Based on our BVP, not all variables within the data will be used. The following variables we plan on using to evaluate salary major are: **major1, survey_plans, Gender, IPEDS.Race.Ethnicity, Year.x, survey_company** and **survey_salary.**
 
 The variables **Gender** and **IPEDS.RACE.Ethnicity** can be used for further analysis if our client is interested in comparing salries by these variables.
 
-Below is more information on each of these variables. All the variable selected except for **survey_company** and **survey_salary** had a drop down menu to choose from, meaning there were no missing values. 
+Below is more information on each of these variables. All the variable selected except for **survey_company** and **survey_salary** had a drop down menu to choose from, meaning there were no missing values.
 
 ## Selected Variables Levels
 
@@ -206,8 +207,9 @@ table(data$IPEDS.Race.Ethnicity)
 ```
 
 # Date Cleaning
- The variables that required cleaning were **survey_company**, **survey_plans**, and **survey_salary**.
- 
+
+The variables that required cleaning were **survey_company**, **survey_plans**, and **survey_salary**.
+
 ## survey_company
 
 For **survey_company**, we wanted to find the companies that hire the most students from Farmer. To start, we capitalized all letters so we did not have to worry about case sensitivity while searching for frequencies. We wanted to find the companies with the highest frequencies in order to compare the salaries of each major within said companies.
@@ -221,11 +223,13 @@ head(top20sorted, 20)
 ```
 
 We then cleaned the top companies to ensure all responses were counted for. We collapsed the levels of all companies and focused on cleaning the top 10 company names fixing spelling inconsistencies to provide a more accurate count of top companies
+
 ```{r}
 data$survey_company = factor(data$survey_company)
 ```
 
 ### Deloitte
+
 ```{r results = "hide"}
 data$survey_company=fct_collapse(data$survey_company, "DELOITTE" = c("DELOITTE CONSULTING", "DELOITTE.", "DELOITTE, CHINA", "DELOITTE LLP", "DELOITTE TAX"))
 ```
@@ -276,7 +280,6 @@ data$survey_company=fct_collapse(data$survey_company, "JP MOGAN CHASE" = c("JP M
 
 There were no misspellings or inconsistencies for RSM.
 
-
 ### Coyote Logistics
 
 ```{r results = "hide"}
@@ -284,7 +287,9 @@ data$survey_company=fct_collapse(data$survey_company, "COYOTE LOGISTICS" = c("CO
 ```
 
 ### Finalized Company Count
+
 After fixing inconsistencies among company names, we see the counts for each company increase as well as a new company, DHL, being included in the top ten company counts.
+
 ```{r}
 top20companies = as.data.frame(table(data$survey_company))
 top20sorted = top20companies[order(-top20companies$Freq), ]
