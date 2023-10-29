@@ -428,4 +428,10 @@ plot_ly(filtered_data, x = ~major1, y = ~average_salary, type = "bar", marker = 
 
 ```
 
+```{r}
+sessionInfo()
+```
+
+
+
 

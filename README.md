@@ -6,18 +6,24 @@ The Farmer School of Business conducts annual surveys to learn about student's j
 
 * Create a a graph that shows the average salary per year, per major of Farmer graduates.
 * Overlay a graph of the previous year's average salary per year, per major of Farmer graduates
-* Compare these graphs with national averages from other schools to show FSB’s success (if FSB performs better than the national average)
+* Compare these graphs with averages from other schools to show FSB’s success (if FSB performs better than the national average)
 
 This will help Kirk Bogard by:
 
 * Understanding of data that has been collected over the last 3 years in a structured way
 * Having the average salary of each FSB major for past years
-* Understanding of placement rates for each major
+* Understanding of which majors tend to have higher salaries within the same company
 
+## File Overview
+1) Project-2.RMD: R-Markdown file that contains our data processing in order to generate clean data for analyses 
+2) Project-2.HTML: HTML file that displays our data processing in an easy to understand layout
+3) Student Success Dashboard.RMD: R-Markdown file that contains the code for generating our dashboard
+4) Student Success Dashboard.HTML: HTML file that displays our dashboard, the final deliverable, showing salary distribution by major in FSB over the previous 3 years, salary distribution of FSB as a whole, FSB major salaries compared to Kelley Business School and the Fisher School of Business majors, and the salary distribution for different majors within the same company.
+5) Copy of poster Value poposition canvas simple white.png: Our business value proposition in an image format
 
-## Data Sources
+## Main Data Source
 
-You have three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021.  The dataset provided had 42 variables.  The source is either derived by me during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsitration, or from the self reported senior survey.  I have cleaned and merged the files into one file.  
+You have three years of data representing FSB graduates, including graduates in 2019, 2020, and 2021. The dataset provided had 42 variables.  The source is either derived by me during data cleaning/merging, from the Oracle Business Intelligence Enterprise Edition (OBIEE) maintained by Miami adminsitration, or from the self reported senior survey.
 
 1.  nmajor: numeric,derived, the number of majors 
 2.  major1: text, OBIEE, first major
@@ -61,3 +67,12 @@ You have three years of data representing FSB graduates, including graduates in 
 40.  survey_pref_loc: text, survey, student reported whether working in preferred location
 41.  survey_salary: numeric, survey, student reported salary
 42.  survey_state: text, survey, student reported state in which job is located
+
+## Support Data Sources
+
+Indiana University Salaries: https://kelley.iu.edu/recruiters-companies/undergrad/statistics/salary-statistics/index.html
+
+Ohio State Salaries: https://files.fisher.osu.edu/careers-recruiting/public/2021-10/AnnualReport2021.pdf?VersionId=UnbXIIgZenGaz8EVfozFCS1lJrl9bf5A
+
+CPI Inflation Calculator: 
+https://www.officialdata.org/us/inflation/2022?endYear=2021&amount=60000
